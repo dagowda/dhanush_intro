@@ -36,7 +36,7 @@ int main() {
 
     char* AESCode;
     DWORD AESCodeLen;
-    LDDATA("AESKEYCODE", &AESCode, &AESCodeLen);
+    LDDATA("AESCODE", &AESCode, &AESCodeLen);
     
     
     PROCESSENTRY32 pe32;

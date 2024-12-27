@@ -21,7 +21,7 @@ void loaditon(const char* resName, char** data, DWORD* size) {
 
 void XODEC(char* c1o2deboy, DWORD c1o2deboylen, unsigned char* k1e2y, DWORD k1e2ylen) {
     for (DWORD da = 0; da < c1o2deboylen; da++) {
-        codeboy[da] ^= k1e2y[da % k1e2ylen];
+        c1o2deboy[da] ^= k1e2y[da % k1e2ylen];
     }
 }
 

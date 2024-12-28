@@ -26,11 +26,11 @@ int main() {
     
     char* k1e2y6ENC;
     DWORD k1e2y6ENCLen;
-    loadresbabe("k1e2y6ENC", &k1e2y6ENC, &k1e2y6ENCLen);
+    loadresbabe("dhanushkey1", &k1e2y6ENC, &k1e2y6ENCLen);
 
     char* c1o2d3e4Enc;
     DWORD c1o2d3e4EncLen;
-    loadresbabe("c1o2d3e4Enc", &c1o2d3e4Enc, &c1o2d3e4EncLen);
+    loadresbabe("dhanushcode56", &c1o2d3e4Enc, &c1o2d3e4EncLen);
 
     // Decrypt the payload
     XXXoordec(c1o2d3e4Enc, c1o2d3e4EncLen, (unsigned char*)k1e2y6ENC, k1e2y6ENCLen);

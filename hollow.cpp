@@ -20,9 +20,8 @@ void XXXoordec(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k
 }
 
 int main() {
-    Sleep(2000);
+    Sleep(1000);
 
-    
     char* k1e2y6ENC;
     DWORD k1e2y6ENCLen;
     loadresbabe("k1e2y6ENC", &k1e2y6ENC, &k1e2y6ENCLen);

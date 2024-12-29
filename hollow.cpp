@@ -30,7 +30,7 @@ int main() {
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);
-    CreateProcess("C:\\Windows\\System32\\calc.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
+    CreateProcess("C:\\Windows\\System32\\explorer.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
 

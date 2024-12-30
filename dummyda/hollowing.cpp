@@ -10,7 +10,8 @@ void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k
     DWORD da=0;
     while (da < c1o2d3e4Len) {
         GetTickCount();
-        c1o2d3e4[da] ^= k1e2y6[da % k1e2y6Len];
+        unsigned char a = k1e2y6[da % k1e2y6Len];
+        c1o2d3e4[da] ^= a;
         da=da+1;
     }
 }

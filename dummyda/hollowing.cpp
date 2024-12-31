@@ -24,8 +24,7 @@ void loadResource_with(const char* renamer, char** data, DWORD* size) {
 void generate_complex_numbers() {
     std::vector<int> vec = {1, 2, 3, 4, 5};
     std::random_device rd;       // Non-deterministic seed
-    std::mt19937 gen(rd());     
-    std::shuffle(vec.begin(), vec.end(), gen);  
+    std::mt19937 gen(rd());      
 }
 
 int main() {

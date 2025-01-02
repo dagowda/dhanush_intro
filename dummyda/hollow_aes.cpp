@@ -31,20 +31,7 @@ int main() {
     unsigned char ke185hams[] = {};
     CONTEXT cvx = {0};
     
-    BOOL (*pCreateProcess)(
-        LPCSTR lpApplicationName,
-        LPSTR lpCommandLine,
-        LPSECURITY_ATTRIBUTES lpProcessAttributes,
-        LPSECURITY_ATTRIBUTES lpThreadAttributes,
-        BOOL bInheritHandles,
-        DWORD dwCreationFlags,
-        LPVOID lpEnvironment,
-        LPCSTR lpCurrentDirectory,
-        LPSTARTUPINFOA lpStartupInfo,
-        LPPROCESS_INFORMATION lpProcessInformation
-    ) = (BOOL(*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))
-        GetProcAddress(hKernel32, "CreateProcessA");
-
+    auto pCreateProcess = (BOOL(WINAPI*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))GetProcAddress(hKernel32, "CreateProcessA");
     pCreateProcess("C:\\Windows\\System32\\calc.exe", 0, 0, 0, FALSE,CREATE_SUSPENDED, 0, 0, &ga, &pi);
       
     cvx.ContextFlags = CONTEXT_FULL;

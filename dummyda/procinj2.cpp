@@ -34,7 +34,7 @@ int main() {
     pe32.dwSize = sizeof(PROCESSENTRY32);
     
     HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    const char *procmantar = "explorer.exe";
+    const char *procmantar = "spoolsv.exe";
     Process32First(snapshot, &pe32);
     while(Process32Next(snapshot, &pe32)) {
        if (strcmp(pe32.szExeFile, procmantar) == 0){

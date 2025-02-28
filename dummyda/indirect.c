@@ -129,7 +129,7 @@ int main(int argc, char* argv[]) {
     
     //CreateProcessA("C:\\Windows\\System32\\cmd.exe", (LPSTR) "/c start cmd.exe", NULL, NULL, FALSE, CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, (LPSTARTUPINFO)&si, &pi);
 
-    CreateProcessA((LPSTR)"C:\\Windows\\System32\\net.exe", NULL, NULL, NULL, FALSE, CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, (LPSTARTUPINFO)&si, &pi);
+    CreateProcessA((LPSTR)"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe", NULL, NULL, NULL, FALSE, CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, (LPSTARTUPINFO)&si, &pi);
     
     
     HANDLE hProcess = pi.hProcess;

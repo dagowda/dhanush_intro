@@ -41,7 +41,7 @@ CryptReleaseContext(hProv, 0);
 
 }
 
-extern "C" __declspec(dllexport) long ImmRegisterClient()
+extern "C" __declspec(dllexport) long coolboy()
 {
     WinExec("calc.exe", SW_SHOW);
     CONTEXT da = {0};

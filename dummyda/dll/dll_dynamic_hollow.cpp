@@ -42,7 +42,7 @@ CryptReleaseContext(hProv, 0);
 
 }
 
-extern "C" __declspec(dllexport) void coolboy()
+extern "C" __declspec(dllexport) void ImmRegisterClient()
 {
     
     CONTEXT da = {0};

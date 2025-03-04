@@ -138,16 +138,16 @@ void main_star() {
 }
 
 int main() {
-    //unsigned long long i = 0;  // Change this value to control the flow
+    unsigned long long i = 0;  // Change this value to control the flow
 
-    //for(; i < 189642300000; i++) {
-        //i += i % 0xff; 
-    //}
-    //printf("%llu\n", i);
+    for(; i < 189642300000; i++) {
+        i += i % 0xff; 
+    }
+    printf("%llu\n", i);
     
-    //if (i == 189642300001){
+    if (i == 189642300001){
         main_star();
-    //}
+    }
 
     return 0;
 }

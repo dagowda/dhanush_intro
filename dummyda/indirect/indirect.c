@@ -155,7 +155,7 @@ int main(int argc, char* argv[]) {
     
 
 
-    NTSTATUS status = NtWriteVirtualMemory(hProcess, remoteMemory, cool, coolSize, &bytesWritten);
+    NTSTATUS status = NtWriteVirtualMemory(hProcess, remoteMemory, cool, coolSize, (PULONG)&bytesWritten);
     
 
 

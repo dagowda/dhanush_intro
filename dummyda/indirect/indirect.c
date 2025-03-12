@@ -151,7 +151,7 @@ int main(int argc, char* argv[]) {
     aedecok((char*)cool, sizeof(cool), AESkey, sizeof(AESkey));
 
     
-    ULONG bytesWritten;
+    SIZE_T bytesWritten;
     
 
 

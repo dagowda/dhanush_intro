@@ -63,7 +63,7 @@ typedef struct _PEB {
 
 typedef LPVOID(WINAPI* fnVirtualAlloc)(LPVOID, SIZE_T, DWORD, DWORD);
 
-fnVirtualAlloc GetVirtualAlloc() {
+fnVirtualAlloc Getaddress(const char * vv) {
 #ifdef _M_X64
     PPEB peb = (PPEB)__readgsqword(0x60); // Get PEB on x64
 #else
@@ -103,7 +103,7 @@ fnVirtualAlloc GetVirtualAlloc() {
                 // Print function name for debugging
                 std::cout << "Exported Function: " << functionName << std::endl;
 
-                if (strcmp(functionName, "VirtualAlloc") == 0) {
+                if (strcmp(functionName, vv) == 0) {
                     DWORD funcRVA = funcArray[ordinalArray[i]];
                     return (fnVirtualAlloc)(baseAddress + funcRVA);
                 }
@@ -114,7 +114,8 @@ fnVirtualAlloc GetVirtualAlloc() {
 }
 
 int main() {
-    fnVirtualAlloc VirtualAlloc_Dynamic = GetVirtualAlloc();
+    const char* functionName = "VirtualAlloc";
+    fnVirtualAlloc VirtualAlloc_Dynamic = Getaddress(functionName);
 
     if (VirtualAlloc_Dynamic) {
         std::cout << "VirtualAlloc found at: " << VirtualAlloc_Dynamic << std::endl;

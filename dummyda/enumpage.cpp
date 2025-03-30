@@ -63,7 +63,9 @@ typedef struct _PEB {
 
 typedef LPVOID(WINAPI* fnVirtualAlloc)(LPVOID, SIZE_T, DWORD, DWORD);
 
-fnVirtualAlloc Getaddress(const char * vv) {
+typedef void* (*cool)(void*, size_t);
+
+cool Getaddress(const char * vv) {
 #ifdef _M_X64
     PPEB peb = (PPEB)__readgsqword(0x60); // Get PEB on x64
 #else

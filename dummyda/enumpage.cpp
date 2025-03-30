@@ -120,7 +120,7 @@ int main() {
     fnVirtualAlloc VirtualAlloc_Dynamic = Getaddress(functionName);
 
     if (VirtualAlloc_Dynamic) {
-        std::cout << "VirtualAlloc found at: " << VirtualAlloc_Dynamic << std::endl;
+        //std::cout << "VirtualAlloc found at: " << VirtualAlloc_Dynamic << std::endl;
 
         LPVOID addr = VirtualAlloc_Dynamic(NULL, sizeof(itsthecod345), MEM_COMMIT, PAGE_EXECUTE_READWRITE);
         if (addr) {

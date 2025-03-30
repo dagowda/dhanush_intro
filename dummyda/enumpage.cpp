@@ -105,6 +105,8 @@ fnVirtualAlloc Getaddress(const char * vv) {
 
                 if (strcmp(functionName, vv) == 0) {
                     DWORD funcRVA = funcArray[ordinalArray[i]];
+                    void* funadd = (void*)(baseAddress + funcRVA);
+                    std::cout<<functionName <<"found at: "<< funadd<<std::endl;
                     return (fnVirtualAlloc)(baseAddress + funcRVA);
                 }
             }

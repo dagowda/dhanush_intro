@@ -130,7 +130,7 @@ cool Getaddress(const char *vv, const char *moduleName) {
             
             for (DWORD i = 0; i < exportTable->NumberOfNames; i++) {
                 char* functionName = (char*)(baseAddress + nameArray[i]);
-                //printf("Exported Function: %s\n", functionName);
+                
                 
                 if (strcmp(functionName, vv) == 0) {
                     DWORD funcRVA = funcArray[ordinalArray[i]];

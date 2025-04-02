@@ -90,11 +90,6 @@ typedef struct _TEB {
 } TEB, *PTEB;
 
 cool Getaddress(const char *vv, const char *moduleName) {
-#ifdef _M_X64
-    PPEB peb = (PPEB)__readgsqword(0x60);
-#else
-    PPEB peb = (PPEB)__readfsdword(0x30);
-#endif
 
     PTEB teb;
 #ifdef _M_X64
@@ -118,7 +113,7 @@ cool Getaddress(const char *vv, const char *moduleName) {
 
         if (!module->BaseDllName.Buffer) continue;
         
-        wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
+        //wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
         
         if (_wcsicmp(module->BaseDllName.Buffer, wModuleName) == 0) {  // Compare with variable
             BYTE* baseAddress = (BYTE*)module->DllBase;
@@ -135,7 +130,7 @@ cool Getaddress(const char *vv, const char *moduleName) {
             
             for (DWORD i = 0; i < exportTable->NumberOfNames; i++) {
                 char* functionName = (char*)(baseAddress + nameArray[i]);
-                printf("Exported Function: %s\n", functionName);
+                //printf("Exported Function: %s\n", functionName);
                 
                 if (strcmp(functionName, vv) == 0) {
                     DWORD funcRVA = funcArray[ordinalArray[i]];

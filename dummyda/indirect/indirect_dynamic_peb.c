@@ -98,7 +98,7 @@ cool Getaddress(const char *vv, const char *moduleName) {
     teb = (PTEB)__readfsdword(0x18);
 #endif
 
-    peb = teb->ProcessEnvironmentBlock;
+    PPEB peb = teb->ProcessEnvironmentBlock;
     PPEB_LDR_DATA ldr = peb->Ldr;
     LIST_ENTRY* moduleList = &ldr->InLoadOrderModuleList;
     LIST_ENTRY* entry = moduleList->Flink;

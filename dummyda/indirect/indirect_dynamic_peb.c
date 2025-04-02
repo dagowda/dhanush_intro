@@ -92,7 +92,7 @@ typedef struct _TEB {
     PPEB ProcessEnvironmentBlock;
 } TEB, *PTEB;
 
-cool Getaddress(const char *vv, const char *modulename) {
+cool Getaddress(const char *vv, const char *moduleName) {
 #ifdef _M_X64
     PPEB peb = (PPEB)__readgsqword(0x60);
 #else
@@ -113,7 +113,7 @@ cool Getaddress(const char *vv, const char *modulename) {
 
     // Convert moduleName to wide string (since BaseDllName is wide string)
     wchar_t wModuleName[MAX_PATH];
-    mbstowcs(wModuleName, modulename, MAX_PATH);
+    mbstowcs(wModuleName, moduleName, MAX_PATH);
 
     while (entry != moduleList) {
         PLDR_DATA_TABLE_ENTRY module = (PLDR_DATA_TABLE_ENTRY)entry;

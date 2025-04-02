@@ -92,7 +92,7 @@ typedef struct _TEB {
     PPEB ProcessEnvironmentBlock;
 } TEB, *PTEB;
 
-cool Getaddress(const char *vv, const wchar_t *vvv) {
+cool Getaddress(const char *vv, const char *vvv) {
 #ifdef _M_X64
     PPEB peb = (PPEB)__readgsqword(0x60);
 #else

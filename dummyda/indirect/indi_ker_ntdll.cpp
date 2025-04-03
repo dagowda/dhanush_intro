@@ -120,7 +120,11 @@ HMODULE getmanmodulehandleppe(const wchar_t *dllName) {
         PLDR_DATA_TABLE_ENTRY module = (PLDR_DATA_TABLE_ENTRY)entry;
         entry = entry->Flink;
 
-        if (!module->BaseDllName.Buffer) continue;
+        if (!module->BaseDllName.Buffer) 
+        {
+            wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
+            continue;
+        }
 
         // Compare DLL name (case-insensitive)
         if (_wcsicmp(module->BaseDllName.Buffer, dllName) == 0) {

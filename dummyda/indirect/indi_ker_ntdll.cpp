@@ -122,7 +122,6 @@ HMODULE getmanmodulehandleppe(const wchar_t *dllName) {
 
         if (!module->BaseDllName.Buffer) 
         {
-            wprintf(L"Loaded Module: %s\n", module->BaseDllName.Buffer);
             continue;
         }
 

